@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 64" fill="none">
+  <!-- Icon Background -->
+  <rect width="60" height="60" rx="12" fill="#E84610"/>
+  <!-- Stylized N letter -->
+  <path d="M14 48V16h6.5l20 24.5V16H47v32h-6.5L20.5 23.5V48H14z" fill="white"/>
+  <!-- Small accent dot -->
+  <circle cx="47" cy="48" r="4" fill="#FFC107"/>
+  
+  <!-- Company Name -->
+  <text x="72" y="36" font-family="Poppins, 'Segoe UI', sans-serif" font-size="26" font-weight="900" fill="#1B2A4A" letter-spacing="-0.5">NEMATEL</text>
+  <!-- Tagline -->
+  <text x="73" y="53" font-family="Inter, 'Segoe UI', sans-serif" font-size="10" font-weight="500" fill="#6C757D" letter-spacing="0.5">New Materials &amp; Technology Ltd.</text>
+</svg>
