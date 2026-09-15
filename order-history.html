@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order History - Easycon BD</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23e84610'/><text y='72' x='12' font-size='68' font-weight='900' fill='white' font-family='sans-serif'>E</text></svg>">
+</head>
+<body>
+<div id="mobile-menu-placeholder"></div>
+<div id="cart-drawer-placeholder"></div>
+<div id="header-placeholder"></div>
+
+<div class="page-banner">
+  <div class="container-xl">
+    <h1><i class="bi bi-bag-check-fill me-3" style="color:var(--primary);"></i>Order History</h1>
+    <ul class="breadcrumb-custom"><li><a href="index.html">Home</a></li><li><a href="dashboard.html">Dashboard</a></li><li class="active">Orders</li></ul>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container-xl">
+    <div class="row g-4">
+      <div class="col-lg-3 d-none d-lg-block">
+        <div class="dashboard-sidebar">
+          <div class="dashboard-user-card">
+            <div class="user-avatar"><i class="bi bi-person-fill" style="font-size:36px;"></i></div>
+            <h5>Md. Suhel</h5>
+            <p>suhel@example.com</p>
+          </div>
+          <ul class="dashboard-nav">
+            <li><a href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+            <li><a href="order-history.html" class="active"><i class="bi bi-bag-check"></i> My Orders</a></li>
+            <li><a href="wishlist.html"><i class="bi bi-heart"></i> Wishlist</a></li>
+            <li><a href="track-order.html"><i class="bi bi-geo-alt"></i> Track Order</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <!-- Filter Bar -->
+        <div style="background:white;border-radius:12px;padding:16px 20px;margin-bottom:20px;box-shadow:var(--shadow-sm);display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+          <span style="font-size:14px;font-weight:700;color:var(--gray-800);">All Orders</span>
+          <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;">
+            ${['All','Pending','Processing','Shipped','Delivered','Cancelled'].map((s,i) => `
+              <button onclick="filterOrders('${s.toLowerCase()}')" style="padding:6px 14px;border:2px solid ${i===0?'var(--primary)':'var(--gray-200)'};background:${i===0?'var(--primary)':'white'};color:${i===0?'white':'var(--gray-700)'};border-radius:50px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;">${s}</button>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- Orders List -->
+        <div id="orders-list" style="display:flex;flex-direction:column;gap:16px;"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="data/products.js"></script>
+<script src="js/api.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/wishlist.js"></script>
+<script src="js/main.js"></script>
+<script src="js/components.js"></script>
+<script>
+renderSharedComponents('');
+
+function renderOrders(orders) {
+  const container = document.getElementById('orders-list');
+  if (!orders.length) {
+    container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📦</div><h4>No orders found</h4><p>You haven't placed any orders yet.</p><a href="product-listing.html" class="btn-primary-custom">Start Shopping</a></div>`;
+    return;
+  }
+  container.innerHTML = orders.map(o => `
+    <div style="background:white;border-radius:16px;padding:24px;box-shadow:var(--shadow-sm);border:2px solid transparent;transition:border-color 0.2s;" onmouseover="this.style.borderColor='rgba(232,70,16,0.15)'" onmouseout="this.style.borderColor='transparent'">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--gray-100);">
+        <div>
+          <div style="font-size:13px;color:var(--gray-500);margin-bottom:4px;">Order ID</div>
+          <div style="font-size:16px;font-weight:800;color:var(--gray-900);">${o.id}</div>
+        </div>
+        <div>
+          <div style="font-size:13px;color:var(--gray-500);margin-bottom:4px;">Date</div>
+          <div style="font-size:14px;font-weight:600;">${o.date}</div>
+        </div>
+        <div>
+          <div style="font-size:13px;color:var(--gray-500);margin-bottom:4px;">Items</div>
+          <div style="font-size:14px;font-weight:600;">${o.items} item(s)</div>
+        </div>
+        <div>
+          <div style="font-size:13px;color:var(--gray-500);margin-bottom:4px;">Total</div>
+          <div style="font-size:18px;font-weight:800;color:var(--primary);">৳${o.total.toLocaleString()}</div>
+        </div>
+        <div>
+          <span class="order-badge ${o.status}">${o.status.charAt(0).toUpperCase()+o.status.slice(1)}</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <div style="font-size:13px;color:var(--gray-500);"><i class="bi bi-credit-card me-1"></i>${o.paymentMethod}</div>
+        ${o.tracking ? `<div style="font-size:13px;color:var(--gray-500);"><i class="bi bi-box-seam me-1"></i>Tracking: ${o.tracking}</div>` : ''}
+        <div style="margin-left:auto;display:flex;gap:8px;">
+          ${o.tracking ? `<a href="track-order.html?order=${o.id}" style="padding:8px 16px;border:2px solid var(--primary);color:var(--primary);border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.background='var(--primary)';this.style.color='white'" onmouseout="this.style.background='';this.style.color='var(--primary)'"><i class="bi bi-geo-alt me-1"></i>Track</a>` : ''}
+          <button onclick="showToast('Invoice downloaded','success')" style="padding:8px 16px;border:2px solid var(--gray-200);color:var(--gray-700);background:white;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--gray-400)'" onmouseout="this.style.borderColor='var(--gray-200)'">
+            <i class="bi bi-download me-1"></i>Invoice
+          </button>
+          ${o.status === 'delivered' ? `<button onclick="showToast('Return request submitted','success')" style="padding:8px 16px;border:2px solid var(--danger);color:var(--danger);background:white;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;">Return</button>` : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterOrders(status) {
+  // Update button styles
+  document.querySelectorAll('[onclick^="filterOrders"]').forEach(btn => {
+    btn.style.background = 'white';
+    btn.style.color = 'var(--gray-700)';
+    btn.style.borderColor = 'var(--gray-200)';
+  });
+  event.target.style.background = 'var(--primary)';
+  event.target.style.color = 'white';
+  event.target.style.borderColor = 'var(--primary)';
+
+  const orders = DUMMY_DATA.orders.filter(o => status === 'all' || o.status === status);
+  renderOrders(orders);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderOrders(DUMMY_DATA.orders);
+});
+</script>
+</body>
+</html>

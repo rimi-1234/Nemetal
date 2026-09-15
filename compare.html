@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compare Products — Nematel</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23e84610'/><path d='M20 80V20h10L60 62V20h10v60H60L30 38v42z' fill='white'/></svg>">
+</head>
+<body>
+
+<div id="page-loader" class="page-loader">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+    <img src="assets/logo.svg" alt="Nematel" style="height:52px;">
+    <div class="loader-ring"></div>
+  </div>
+</div>
+<div id="toast-container" class="toast-container-custom"></div>
+
+<!-- Header/Footer rendered by components.js -->
+<div id="header-placeholder"></div>
+<div id="mobile-menu-placeholder"></div>
+<div id="cart-drawer-placeholder"></div>
+
+<!-- PAGE CONTENT -->
+<main style="min-height:80vh;background:#f8f9fa;">
+
+  <!-- Page Hero -->
+  <div style="background:linear-gradient(135deg,var(--secondary),#243558);padding:32px 0;">
+    <div class="container-xl">
+      <nav aria-label="breadcrumb" style="font-size:13px;margin-bottom:8px;">
+        <ol class="breadcrumb mb-0" style="gap:6px;display:flex;align-items:center;list-style:none;padding:0;">
+          <li><a href="index.html" style="color:rgba(255,255,255,0.6);text-decoration:none;">Home</a></li>
+          <li style="color:rgba(255,255,255,0.4);font-size:10px;"><i class="bi bi-chevron-right"></i></li>
+          <li style="color:white;font-weight:600;">Compare Products</li>
+        </ol>
+      </nav>
+      <h1 style="color:white;font-size:26px;font-weight:800;margin:0;">Compare Products</h1>
+      <p style="color:rgba(255,255,255,0.65);font-size:14px;margin:6px 0 0;">Compare specifications and prices side-by-side</p>
+    </div>
+  </div>
+
+  <div class="container-xl" style="padding-top:32px;padding-bottom:48px;">
+
+    <!-- Empty State (shown when no products added) -->
+    <div id="compare-empty" class="empty-state" style="padding:80px 20px;">
+      <div class="empty-state-icon" style="font-size:64px;">⚖️</div>
+      <h3 style="font-size:22px;font-weight:700;color:var(--gray-900);margin-bottom:8px;">No Products to Compare</h3>
+      <p style="color:var(--gray-500);margin-bottom:24px;">Add products to compare their specifications, prices and features side-by-side.</p>
+      <a href="product-listing.html" class="btn-primary-custom">
+        <i class="bi bi-grid me-2"></i>Browse Products
+      </a>
+    </div>
+
+    <!-- Compare Table (shown when products are added) -->
+    <div id="compare-content" style="display:none;">
+
+      <!-- Compare Actions -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+        <div style="font-size:14px;color:var(--gray-600);">
+          <i class="bi bi-info-circle me-1" style="color:var(--primary);"></i>
+          You can compare up to <strong>4 products</strong> at a time
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button onclick="clearComparison()" class="btn-outline-primary-custom" style="font-size:13px;padding:8px 16px;">
+            <i class="bi bi-x-circle me-1"></i>Clear All
+          </button>
+          <a href="product-listing.html" class="btn-primary-custom" style="font-size:13px;padding:8px 16px;">
+            <i class="bi bi-plus me-1"></i>Add More
+          </a>
+        </div>
+      </div>
+
+      <!-- Product Headers -->
+      <div style="background:white;border-radius:20px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.06);border:1.5px solid var(--gray-100);">
+        <div id="compare-grid" style="display:grid;gap:0;">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Add from listing (quick add) -->
+    <div style="margin-top:40px;">
+      <div class="section-header">
+        <div class="section-title-group">
+          <span class="section-label">Explore</span>
+          <h2 class="section-title">Popular Products</h2>
+        </div>
+        <a href="product-listing.html" class="view-all-btn">View All <i class="bi bi-arrow-right"></i></a>
+      </div>
+      <p style="color:var(--gray-500);font-size:13px;margin-top:-8px;margin-bottom:20px;">
+        <i class="bi bi-info-circle me-1"></i>Click the compare button on any product card to add it to comparison
+      </p>
+      <div id="compare-suggestions" class="products-grid">
+        <!-- Products rendered by JS -->
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<div id="footer-placeholder"></div>
+<nav class="mobile-bottom-nav">
+  <div class="nav-items">
+    <a href="index.html" class="nav-item"><i class="bi bi-house-fill"></i><span>Home</span></a>
+    <a href="categories.html" class="nav-item"><i class="bi bi-grid-fill"></i><span>Categories</span></a>
+    <button class="nav-item center-btn" onclick="openCartDrawer()" style="border:none;cursor:pointer;">
+      <i class="bi bi-cart3"></i>
+      <span class="badge-count d-none cart-count"></span>
+    </button>
+    <a href="compare.html" class="nav-item active"><i class="bi bi-arrow-left-right"></i><span>Compare</span></a>
+    <a href="dashboard.html" class="nav-item"><i class="bi bi-person"></i><span>Account</span></a>
+  </div>
+</nav>
+<button id="back-to-top" class="back-to-top"><i class="bi bi-chevron-up"></i></button>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="data/products.js"></script>
+<script src="js/api.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/wishlist.js"></script>
+<script src="js/main.js"></script>
+<script src="js/components.js"></script>
+
+<script>
+// Compare storage
+const COMPARE_KEY = 'ec_compare';
+
+function getCompareList() {
+  try { return JSON.parse(localStorage.getItem(COMPARE_KEY) || '[]'); }
+  catch { return []; }
+}
+
+function saveCompareList(list) {
+  localStorage.setItem(COMPARE_KEY, JSON.stringify(list));
+  renderCompare();
+}
+
+function addToCompare(productId) {
+  const list = getCompareList();
+  if (list.includes(productId)) {
+    showToast('Already in comparison!', 'info');
+    return;
+  }
+  if (list.length >= 4) {
+    showToast('Max 4 products can be compared', 'warning');
+    return;
+  }
+  list.push(productId);
+  saveCompareList(list);
+  showToast('Added to comparison!', 'success');
+  document.querySelectorAll(`[data-compare-id="${productId}"]`).forEach(btn => {
+    btn.classList.add('active');
+    btn.title = 'Remove from Compare';
+  });
+}
+
+function removeFromCompare(productId) {
+  const list = getCompareList().filter(id => id !== productId);
+  saveCompareList(list);
+  document.querySelectorAll(`[data-compare-id="${productId}"]`).forEach(btn => {
+    btn.classList.remove('active');
+  });
+}
+
+function clearComparison() {
+  saveCompareList([]);
+  showToast('Comparison cleared', 'info');
+}
+
+function renderCompare() {
+  const list = getCompareList();
+  const empty = document.getElementById('compare-empty');
+  const content = document.getElementById('compare-content');
+  const grid = document.getElementById('compare-grid');
+  const count = document.getElementById('compare-count');
+
+  if (count) count.textContent = list.length;
+
+  if (list.length === 0) {
+    empty.style.display = '';
+    content.style.display = 'none';
+    return;
+  }
+
+  empty.style.display = 'none';
+  content.style.display = '';
+
+  // Get products
+  const products = list.map(id => {
+    const p = (window.DUMMY_DATA?.products || []).find(p => p.id === id);
+    return p || { id, name: 'Product ' + id, price: 0 };
+  });
+
+  const cols = products.length;
+  const gridCols = `160px repeat(${cols}, 1fr)`;
+
+  // Specs to compare
+  const specs = [
+    { label: 'Brand', key: 'brand' },
+    { label: 'Category', key: 'category' },
+    { label: 'Rating', key: 'rating' },
+    { label: 'Reviews', key: 'reviewCount' },
+    { label: 'In Stock', key: 'inStock' },
+    { label: 'Unit', key: 'unit' },
+    { label: 'Weight', key: 'weight' },
+    { label: 'Warranty', key: 'warranty' },
+  ];
+
+  const formatSpec = (product, key) => {
+    const val = product[key];
+    if (val === undefined || val === null) return '<span style="color:var(--gray-300);">—</span>';
+    if (key === 'inStock') return val ? '<span style="color:var(--success);">✓ Yes</span>' : '<span style="color:var(--danger);">✗ No</span>';
+    if (key === 'rating') return `<span style="color:var(--accent);">★</span> ${val}/5`;
+    return val;
+  };
+
+  grid.style.gridTemplateColumns = gridCols;
+  grid.innerHTML = `
+    <!-- Row 1: Images / Product Headers -->
+    <div style="padding:20px 16px;background:var(--gray-50);border-bottom:2px solid var(--gray-100);display:flex;align-items:center;font-size:12px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.5px;">Products</div>
+    ${products.map(p => `
+      <div style="padding:20px 16px;border-bottom:2px solid var(--gray-100);border-left:1px solid var(--gray-100);text-align:center;position:relative;">
+        <button onclick="removeFromCompare(${p.id})" title="Remove"
+          style="position:absolute;top:10px;right:10px;width:24px;height:24px;background:var(--gray-100);border:none;border-radius:50%;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;"
+          onmouseover="this.style.background='var(--danger)';this.style.color='white'" onmouseout="this.style.background='var(--gray-100)';this.style.color=''">
+          <i class="bi bi-x"></i>
+        </button>
+        <div style="width:80px;height:80px;margin:0 auto 12px;background:var(--gray-50);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:40px;border:1px solid var(--gray-100);">
+          📦
+        </div>
+        <a href="product-detail.html?id=${p.id}" style="font-size:13px;font-weight:700;color:var(--gray-900);text-decoration:none;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.35;">${p.name}</a>
+        <div style="font-size:18px;font-weight:900;color:var(--primary);margin:8px 0;">৳${(p.price||0).toLocaleString()}</div>
+        ${p.originalPrice ? `<div style="font-size:12px;color:var(--gray-400);text-decoration:line-through;">৳${p.originalPrice.toLocaleString()}</div>` : ''}
+        <button onclick="cartManager.addToCart({id:${p.id},name:'${(p.name||'').replace(/'/g,"\\'")}',price:${p.price||0}})"
+          class="btn-primary-custom" style="width:100%;font-size:12px;padding:8px 12px;margin-top:10px;">
+          <i class="bi bi-cart-plus me-1"></i>Add to Cart
+        </button>
+      </div>
+    `).join('')}
+
+    <!-- Spec Rows -->
+    ${specs.map((spec, i) => `
+      <div style="padding:14px 16px;background:${i % 2 === 0 ? 'var(--gray-50)' : 'white'};border-bottom:1px solid var(--gray-100);font-size:12px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:0.5px;display:flex;align-items:center;">${spec.label}</div>
+      ${products.map(p => `
+        <div style="padding:14px 16px;background:${i % 2 === 0 ? 'var(--gray-50)' : 'white'};border-bottom:1px solid var(--gray-100);border-left:1px solid var(--gray-100);text-align:center;font-size:13px;font-weight:600;color:var(--gray-800);">
+          ${formatSpec(p, spec.key)}
+        </div>
+      `).join('')}
+    `).join('')}
+
+    <!-- Add to Cart Row -->
+    <div style="padding:16px;background:var(--gray-50);display:flex;align-items:center;font-size:12px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:0.5px;">Action</div>
+    ${products.map(p => `
+      <div style="padding:16px;background:var(--gray-50);border-left:1px solid var(--gray-100);text-align:center;">
+        <a href="product-detail.html?id=${p.id}" class="btn-outline-primary-custom" style="font-size:12px;padding:7px 14px;display:inline-flex;margin-bottom:6px;width:100%;justify-content:center;">
+          <i class="bi bi-eye me-1"></i>View Details
+        </a>
+      </div>
+    `).join('')}
+  `;
+}
+
+// On load
+renderSharedComponents('compare');
+document.addEventListener('DOMContentLoaded', async () => {
+  renderCompare();
+  await loadProductsToGrid('compare-suggestions', { featured: true });
+});
+
+// Expose globally
+window.addToCompare = addToCompare;
+window.removeFromCompare = removeFromCompare;
+window.clearComparison = clearComparison;
+</script>
+</body>
+</html>

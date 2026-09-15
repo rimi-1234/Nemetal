@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login / Register — Nematel</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23e84610'/><path d='M20 80V20h10L60 62V20h10v60H60L30 38v42z' fill='white'/></svg>">
+
+  <style>
+    /* ── Reset & full-screen lock ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;           /* NO page scroll */
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ════════════════════════════════
+       SPLIT WRAPPER
+    ════════════════════════════════ */
+    .auth-wrapper {
+      display: flex;
+      height: 100vh;
+      width: 100%;
+    }
+
+    /* ════════════════════════════════
+       LEFT PANEL — illustration
+    ════════════════════════════════ */
+    .auth-left {
+      width: 45%;
+      flex-shrink: 0;
+      background: linear-gradient(160deg, #0f1f3d 0%, #1b2a4a 55%, #2c1a06 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 36px 44px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Decorative circles */
+    .auth-left::before {
+      content: '';
+      position: absolute;
+      width: 360px; height: 360px;
+      border-radius: 50%;
+      background: rgba(232,70,16,0.12);
+      top: -80px; right: -80px;
+    }
+    .auth-left::after {
+      content: '';
+      position: absolute;
+      width: 240px; height: 240px;
+      border-radius: 50%;
+      background: rgba(255,193,7,0.07);
+      bottom: -60px; left: -60px;
+    }
+
+    /* Grid dots pattern */
+    .auth-left-dots {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+    }
+
+    /* ── Logo row ── */
+    .auth-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .auth-logo img {
+      height: 40px;
+      filter: brightness(0) invert(1);
+    }
+
+    /* ── Middle illustration ── */
+    .auth-illustration {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0;
+    }
+
+    .auth-tagline {
+      font-family: 'Poppins', sans-serif;
+      font-size: 28px;
+      font-weight: 900;
+      color: white;
+      line-height: 1.25;
+      margin-bottom: 14px;
+    }
+
+    .auth-tagline span { color: #e84610; }
+
+    .auth-desc {
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.6;
+      max-width: 320px;
+      margin-bottom: 28px;
+    }
+
+    /* Construction visual */
+    .auth-visual {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      margin: 20px 0;
+    }
+
+    .building-block {
+      border-radius: 6px 6px 0 0;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      animation: buildUp 1s ease forwards;
+      transform-origin: bottom;
+      transform: scaleY(0);
+    }
+
+    @keyframes buildUp {
+      to { transform: scaleY(1); }
+    }
+
+    /* Trust features */
+    .auth-trust {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.8);
+    }
+
+    .trust-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(232,70,16,0.2);
+      border: 1px solid rgba(232,70,16,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+      color: #e84610;
+    }
+
+    .trust-item strong {
+      display: block;
+      color: white;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .trust-item span {
+      font-size: 11px;
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* ── Bottom footer ── */
+    .auth-left-footer {
+      position: relative;
+      z-index: 1;
+      font-size: 11px;
+      color: rgba(255,255,255,0.3);
+    }
+
+    /* ════════════════════════════════
+       RIGHT PANEL — form
+    ════════════════════════════════ */
+    .auth-right {
+      flex: 1;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Top nav bar */
+    .auth-right-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 40px;
+      border-bottom: 1px solid #f0f0f0;
+      flex-shrink: 0;
+    }
+
+    .auth-right-nav a {
+      font-size: 13px;
+      color: #6c757d;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: color 0.2s;
+    }
+
+    .auth-right-nav a:hover { color: #e84610; }
+
+    /* Scrollable form area */
+    .auth-form-area {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 40px;
+    }
+
+    .auth-form-area::-webkit-scrollbar { width: 4px; }
+    .auth-form-area::-webkit-scrollbar-thumb { background: #e9ecef; border-radius: 4px; }
+
+    .auth-form-box {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    /* ── Heading ── */
+    .auth-form-heading {
+      margin-bottom: 24px;
+    }
+
+    .auth-form-heading h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      color: #1b2a4a;
+      margin-bottom: 4px;
+    }
+
+    .auth-form-heading p {
+      font-size: 13px;
+      color: #6c757d;
+    }
+
+    /* ── Tabs ── */
+    .auth-tabs-new {
+      display: flex;
+      background: #f5f7fa;
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 24px;
+    }
+
+    .auth-tab-new {
+      flex: 1;
+      padding: 9px 16px;
+      border-radius: 9px;
+      border: none;
+      background: transparent;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #6c757d;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .auth-tab-new.active {
+      background: white;
+      color: #e84610;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    /* ── Form fields ── */
+    .field-group {
+      margin-bottom: 14px;
+    }
+
+    .field-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 6px;
+    }
+
+    .field-label a {
+      font-size: 12px;
+      color: #e84610;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .field-label a:hover { text-decoration: underline; }
+
+    .field-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .field-icon {
+      position: absolute;
+      left: 14px;
+      color: #9ca3af;
+      font-size: 15px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .field-input {
+      width: 100%;
+      height: 44px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 0 44px 0 42px;
+      font-size: 13.5px;
+      color: #111827;
+      background: #fafafa;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .field-input::placeholder { color: #c4c9d0; }
+
+    .field-input:focus {
+      border-color: #e84610;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(232,70,16,0.08);
+    }
+
+    .field-input.error { border-color: #ef4444; }
+
+    .field-toggle {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #9ca3af;
+      font-size: 15px;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      transition: color 0.2s;
+    }
+
+    .field-toggle:hover { color: #e84610; }
+
+    /* Two-col row */
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    /* Remember me */
+    .auth-remember {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .auth-remember input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: #e84610;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .auth-remember label {
+      font-size: 12.5px;
+      color: #6c757d;
+      cursor: pointer;
+    }
+
+    /* Terms */
+    .auth-terms {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .auth-terms input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      margin-top: 2px;
+      accent-color: #e84610;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .auth-terms label {
+      font-size: 12px;
+      color: #6c757d;
+      line-height: 1.5;
+    }
+
+    .auth-terms a { color: #e84610; font-weight: 600; text-decoration: none; }
+    .auth-terms a:hover { text-decoration: underline; }
+
+    /* ── Primary button ── */
+    .auth-btn-primary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      height: 46px;
+      background: linear-gradient(135deg, #e84610, #c73b0d);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.2px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-btn-primary::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0);
+      transition: background 0.2s;
+    }
+
+    .auth-btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(232,70,16,0.35);
+    }
+
+    .auth-btn-primary:active { transform: translateY(0); }
+
+    /* ── Divider ── */
+    .auth-divider-new {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .auth-divider-new::before, .auth-divider-new::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e5e7eb;
+    }
+
+    .auth-divider-new span {
+      font-size: 11px;
+      font-weight: 600;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    /* ── Social buttons ── */
+    .auth-social-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .auth-social-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 40px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 10px;
+      background: white;
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .auth-social-btn:hover {
+      border-color: #d1d5db;
+      background: #f9fafb;
+      transform: translateY(-1px);
+    }
+
+    .auth-demo-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      height: 40px;
+      background: #fff4f1;
+      border: 1.5px solid #fecbb8;
+      border-radius: 10px;
+      color: #e84610;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'Inter', sans-serif;
+      margin-top: 10px;
+    }
+
+    .auth-demo-btn:hover {
+      background: #e84610;
+      color: white;
+      border-color: #e84610;
+    }
+
+    /* ── Switch link ── */
+    .auth-switch {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 12.5px;
+      color: #6c757d;
+    }
+
+    .auth-switch button {
+      color: #e84610;
+      font-weight: 700;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 12.5px;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      text-decoration: underline;
+    }
+
+    /* Password strength bar */
+    .pwd-strength {
+      height: 3px;
+      border-radius: 3px;
+      margin-top: 5px;
+      transition: all 0.3s ease;
+      background: #e5e7eb;
+      overflow: hidden;
+    }
+
+    .pwd-strength-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.3s ease, background 0.3s ease;
+      width: 0%;
+    }
+
+    .pwd-strength-text {
+      font-size: 10.5px;
+      margin-top: 3px;
+      font-weight: 600;
+    }
+
+    /* ════════════════════════════════
+       MOBILE — Stack vertically
+    ════════════════════════════════ */
+    @media (max-width: 767px) {
+      html, body { overflow: auto; }
+
+      .auth-wrapper { flex-direction: column; height: auto; }
+
+      .auth-left {
+        width: 100%;
+        padding: 24px 20px;
+        flex-direction: row;
+        align-items: center;
+        gap: 16px;
+        min-height: unset;
+      }
+
+      .auth-left::before, .auth-left::after { display: none; }
+      .auth-illustration, .auth-trust, .auth-left-footer { display: none; }
+      .auth-logo { flex: 1; }
+
+      .auth-right { height: auto; overflow: visible; }
+      .auth-form-area { overflow: visible; padding: 24px 20px 32px; }
+    }
+
+    @media (max-width: 991px) and (min-width: 768px) {
+      .auth-left { width: 38%; padding: 28px 28px; }
+      .auth-tagline { font-size: 22px; }
+      .auth-form-area { padding: 24px 28px; }
+    }
+  </style>
+</head>
+<body>
+<div id="toast-container" class="toast-container-custom"></div>
+<div id="page-loader" class="page-loader">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+    <img src="assets/logo.svg" alt="Nematel" style="height:48px;">
+    <div class="loader-ring"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SPLIT SCREEN WRAPPER
+════════════════════════════════════════════ -->
+<div class="auth-wrapper">
+
+  <!-- ═══════════════════════════
+       LEFT — ILLUSTRATION PANEL
+  ═══════════════════════════ -->
+  <div class="auth-left">
+    <div class="auth-left-dots"></div>
+
+    <!-- Logo -->
+    <div class="auth-logo">
+      <img src="assets/logo.svg" alt="Nematel"
+        onerror="this.outerHTML='<div style=\'display:flex;align-items:center;gap:8px;\'><div style=\'width:36px;height:36px;background:#e84610;border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-weight:900;font-size:18px;\'>N</div><span style=\'color:white;font-weight:900;font-size:18px;font-family:Poppins,sans-serif;\'>NEMATEL</span></div>'">
+    </div>
+
+    <!-- Illustration & tagline -->
+    <div class="auth-illustration">
+
+      <h2 class="auth-tagline">
+        Build Your<br>
+        <span>Dream.</span><br>
+        We Supply It.
+      </h2>
+      <p class="auth-desc">
+        Bangladesh's most trusted online marketplace for construction and building materials — delivered fast, nationwide.
+      </p>
+
+      <!-- Animated building blocks visual -->
+      <div class="auth-visual">
+        <div class="building-block" style="width:28px;height:80px;animation-delay:0.1s;"></div>
+        <div class="building-block" style="width:28px;height:110px;animation-delay:0.2s;"></div>
+        <div class="building-block" style="width:28px;height:60px;animation-delay:0.3s;"></div>
+        <div class="building-block" style="width:28px;height:130px;animation-delay:0.4s;"></div>
+        <div class="building-block" style="width:28px;height:90px;animation-delay:0.5s;"></div>
+        <div class="building-block" style="width:28px;height:150px;animation-delay:0.6s;background:rgba(232,70,16,0.25);border-color:rgba(232,70,16,0.4);"></div>
+        <div class="building-block" style="width:28px;height:70px;animation-delay:0.7s;"></div>
+        <div class="building-block" style="width:28px;height:95px;animation-delay:0.8s;"></div>
+        <!-- Crane arm decoration -->
+        <div style="position:relative;margin-left:8px;">
+          <div style="width:4px;height:170px;background:rgba(255,193,7,0.3);border-radius:2px;animation:buildUp 1s 0.9s ease forwards;transform-origin:bottom;transform:scaleY(0);"></div>
+          <div style="position:absolute;top:0;left:0;width:60px;height:4px;background:rgba(255,193,7,0.3);border-radius:2px;transform-origin:left;animation:buildUp 0.5s 1.8s ease forwards;transform:scaleX(0);"></div>
+          <div style="position:absolute;top:0;left:60px;width:4px;height:30px;background:rgba(255,193,7,0.25);animation:buildUp 0.3s 2.3s ease forwards;transform-origin:top;transform:scaleY(0);"></div>
+        </div>
+      </div>
+
+      <!-- Trust features -->
+      <div class="auth-trust">
+        <div class="trust-item">
+          <div class="trust-icon"><i class="bi bi-people-fill"></i></div>
+          <div><strong>50,000+ Customers</strong><span>Trusted nationwide</span></div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon"><i class="bi bi-box-seam-fill"></i></div>
+          <div><strong>5,000+ Products</strong><span>Always in stock</span></div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon"><i class="bi bi-truck"></i></div>
+          <div><strong>64 Districts</strong><span>Fast nationwide delivery</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="auth-left-footer">
+      © 2024 Nematel — New Materials & Technology Ltd.
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════
+       RIGHT — FORM PANEL
+  ═══════════════════════════ -->
+  <div class="auth-right">
+
+    <!-- Top nav -->
+    <div class="auth-right-nav">
+      <div style="font-size:12px;color:#9ca3af;">
+        Secure Login &nbsp; <i class="bi bi-shield-lock-fill" style="color:#27ae60;"></i>
+      </div>
+      <a href="index.html">
+        <i class="bi bi-arrow-left"></i> Back to Home
+      </a>
+    </div>
+
+    <!-- Scrollable form area -->
+    <div class="auth-form-area">
+      <div class="auth-form-box">
+
+        <!-- Heading -->
+        <div class="auth-form-heading">
+          <h2 id="auth-heading">Welcome Back!</h2>
+          <p id="auth-subheading">Sign in to your Nematel account to continue</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="auth-tabs-new">
+          <button class="auth-tab-new active" id="tab-login" onclick="switchTab('login')">
+            <i class="bi bi-box-arrow-in-right me-1"></i> Sign In
+          </button>
+          <button class="auth-tab-new" id="tab-register" onclick="switchTab('register')">
+            <i class="bi bi-person-plus me-1"></i> Create Account
+          </button>
+        </div>
+
+        <!-- ═══════ LOGIN FORM ═══════ -->
+        <div id="login-form">
+          <div class="field-group">
+            <div class="field-label">Email or Phone</div>
+            <div class="field-wrap">
+              <i class="bi bi-person field-icon"></i>
+              <input type="text" class="field-input" id="login-email"
+                placeholder="email@example.com or 01700000000"
+                onkeydown="if(event.key==='Enter')document.getElementById('login-password').focus()">
+            </div>
+          </div>
+
+          <div class="field-group">
+            <div class="field-label">
+              Password
+              <a href="#">Forgot password?</a>
+            </div>
+            <div class="field-wrap">
+              <i class="bi bi-lock field-icon"></i>
+              <input type="password" class="field-input" id="login-password"
+                placeholder="Enter your password"
+                onkeydown="if(event.key==='Enter')handleLogin()">
+              <button type="button" class="field-toggle" onclick="togglePwd('login-password',this)">
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="auth-remember">
+            <input type="checkbox" id="remember-me">
+            <label for="remember-me">Remember me for 30 days</label>
+          </div>
+
+          <button class="auth-btn-primary" onclick="handleLogin()">
+            <i class="bi bi-box-arrow-in-right"></i> Sign In
+          </button>
+
+          <div class="auth-divider-new"><span>or continue with</span></div>
+
+          <div class="auth-social-row">
+            <button class="auth-social-btn" onclick="showToast('Google login coming soon','info')">
+              <svg width="16" height="16" viewBox="0 0 48 48">
+                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+              </svg>
+              Google
+            </button>
+            <button class="auth-social-btn" onclick="demoLogin()" style="color:#e84610;border-color:#fecbb8;background:#fff4f1;">
+              <i class="bi bi-lightning-fill"></i> Demo Login
+            </button>
+          </div>
+
+          <div class="auth-switch">
+            Don't have an account?
+            <button onclick="switchTab('register')">Create one free →</button>
+          </div>
+        </div>
+
+        <!-- ═══════ REGISTER FORM ═══════ -->
+        <div id="register-form" style="display:none;">
+
+          <div class="field-row">
+            <div class="field-group">
+              <div class="field-label">First Name *</div>
+              <div class="field-wrap">
+                <i class="bi bi-person field-icon"></i>
+                <input type="text" class="field-input" id="reg-first" placeholder="Ahmed">
+              </div>
+            </div>
+            <div class="field-group">
+              <div class="field-label">Last Name</div>
+              <div class="field-wrap">
+                <i class="bi bi-person field-icon"></i>
+                <input type="text" class="field-input" id="reg-last" placeholder="Rahman">
+              </div>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field-group">
+              <div class="field-label">Phone *</div>
+              <div class="field-wrap">
+                <i class="bi bi-telephone field-icon"></i>
+                <input type="tel" class="field-input" id="reg-phone" placeholder="01700000000">
+              </div>
+            </div>
+            <div class="field-group">
+              <div class="field-label">Email</div>
+              <div class="field-wrap">
+                <i class="bi bi-envelope field-icon"></i>
+                <input type="email" class="field-input" id="reg-email" placeholder="email@example.com">
+              </div>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field-group">
+              <div class="field-label">Password *</div>
+              <div class="field-wrap">
+                <i class="bi bi-lock field-icon"></i>
+                <input type="password" class="field-input" id="reg-password" placeholder="Min. 8 chars"
+                  oninput="checkPwdStrength(this.value)">
+                <button type="button" class="field-toggle" onclick="togglePwd('reg-password',this)">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
+              <div class="pwd-strength"><div class="pwd-strength-fill" id="pwd-fill"></div></div>
+              <div class="pwd-strength-text" id="pwd-text" style="color:#9ca3af;"></div>
+            </div>
+            <div class="field-group">
+              <div class="field-label">Confirm *</div>
+              <div class="field-wrap">
+                <i class="bi bi-lock-fill field-icon"></i>
+                <input type="password" class="field-input" id="reg-confirm" placeholder="Repeat password">
+                <button type="button" class="field-toggle" onclick="togglePwd('reg-confirm',this)">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="auth-terms">
+            <input type="checkbox" id="agree-terms">
+            <label for="agree-terms">
+              I agree to the <a href="terms.html" target="_blank">Terms &amp; Conditions</a> and <a href="privacy.html" target="_blank">Privacy Policy</a>
+            </label>
+          </div>
+
+          <button class="auth-btn-primary" onclick="handleRegister()">
+            <i class="bi bi-person-check-fill"></i> Create My Account
+          </button>
+
+          <div class="auth-switch" style="margin-top:12px;">
+            Already have an account?
+            <button onclick="switchTab('login')">Sign in instead →</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div><!-- end auth-right -->
+</div><!-- end auth-wrapper -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="data/products.js"></script>
+<script src="js/api.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/wishlist.js"></script>
+<script src="js/main.js"></script>
+<script>
+// ── Tab switch ──
+function switchTab(tab) {
+  const isLogin = tab === 'login';
+
+  document.getElementById('tab-login').classList.toggle('active', isLogin);
+  document.getElementById('tab-register').classList.toggle('active', !isLogin);
+
+  document.getElementById('login-form').style.display    = isLogin ? '' : 'none';
+  document.getElementById('register-form').style.display = isLogin ? 'none' : '';
+
+  document.getElementById('auth-heading').textContent    = isLogin ? 'Welcome Back!' : 'Create Account';
+  document.getElementById('auth-subheading').textContent = isLogin
+    ? 'Sign in to your Nematel account to continue'
+    : 'Join 50,000+ customers already building smarter';
+}
+
+// Init from hash
+if (window.location.hash === '#register') switchTab('register');
+
+// ── Toggle password visibility ──
+function togglePwd(id, btn) {
+  const input = document.getElementById(id);
+  const icon  = btn.querySelector('i');
+  input.type  = input.type === 'password' ? 'text' : 'password';
+  icon.className = input.type === 'text' ? 'bi bi-eye-slash' : 'bi bi-eye';
+}
+
+// ── Password strength ──
+function checkPwdStrength(val) {
+  const fill = document.getElementById('pwd-fill');
+  const text = document.getElementById('pwd-text');
+  if (!fill) return;
+
+  let score = 0;
+  if (val.length >= 8) score++;
+  if (/[A-Z]/.test(val)) score++;
+  if (/[0-9]/.test(val)) score++;
+  if (/[^A-Za-z0-9]/.test(val)) score++;
+
+  const levels = [
+    { pct: 0,   color: '#e5e7eb', label: '' },
+    { pct: 25,  color: '#ef4444', label: 'Weak' },
+    { pct: 50,  color: '#f59e0b', label: 'Fair' },
+    { pct: 75,  color: '#3b82f6', label: 'Good' },
+    { pct: 100, color: '#22c55e', label: 'Strong 💪' },
+  ];
+
+  const lvl = levels[score];
+  fill.style.width = lvl.pct + '%';
+  fill.style.background = lvl.color;
+  text.textContent = lvl.label;
+  text.style.color = lvl.color;
+}
+
+// ── Login ──
+async function handleLogin() {
+  const email    = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+
+  if (!email || !password) {
+    shakeField(!email ? 'login-email' : 'login-password');
+    showToast('Please fill in all fields', 'warning');
+    return;
+  }
+
+  const btn = event.currentTarget;
+  setLoading(btn, true);
+
+  try {
+    const result = await api.login(email, password);
+    localStorage.setItem('ec_token', result.token);
+    localStorage.setItem('ec_user', JSON.stringify(result.user));
+    showToast('Login successful! Redirecting…', 'success', `Welcome back, ${result.user.name}!`);
+    setTimeout(() => window.location.href = 'dashboard.html', 1400);
+  } catch (e) {
+    showToast('Login failed', 'error', e.message || 'Invalid credentials');
+    document.getElementById('login-password').classList.add('error');
+    setTimeout(() => document.getElementById('login-password').classList.remove('error'), 2000);
+  } finally {
+    setLoading(btn, false);
+  }
+}
+
+// ── Demo login ──
+function demoLogin() {
+  const mockUser = DUMMY_DATA.user;
+  localStorage.setItem('ec_token', 'mock-token-demo');
+  localStorage.setItem('ec_user', JSON.stringify(mockUser));
+  showToast('Demo login! Redirecting…', 'success', `Welcome, ${mockUser.name}!`);
+  setTimeout(() => window.location.href = 'dashboard.html', 1200);
+}
+
+// ── Register ──
+async function handleRegister() {
+  const first   = document.getElementById('reg-first').value.trim();
+  const phone   = document.getElementById('reg-phone').value.trim();
+  const password = document.getElementById('reg-password').value;
+  const confirm  = document.getElementById('reg-confirm').value;
+  const terms    = document.getElementById('agree-terms').checked;
+
+  if (!first || !phone) {
+    showToast('Please fill in required fields', 'warning');
+    return;
+  }
+  if (password.length < 8) {
+    showToast('Password must be at least 8 characters', 'warning');
+    return;
+  }
+  if (password !== confirm) {
+    showToast('Passwords do not match', 'error');
+    document.getElementById('reg-confirm').classList.add('error');
+    setTimeout(() => document.getElementById('reg-confirm').classList.remove('error'), 2000);
+    return;
+  }
+  if (!terms) {
+    showToast('Please accept the terms & conditions', 'warning');
+    return;
+  }
+
+  const btn = event.currentTarget;
+  setLoading(btn, true);
+
+  try {
+    await api.register({ name: `${first} ${document.getElementById('reg-last').value}`.trim(), email: document.getElementById('reg-email').value, password, phone });
+    showToast('Account created! Please sign in.', 'success');
+    setTimeout(() => switchTab('login'), 1200);
+  } catch (e) {
+    showToast('Registration failed', 'error', e.message);
+  } finally {
+    setLoading(btn, false);
+  }
+}
+
+// ── Helpers ──
+function setLoading(btn, loading) {
+  if (!btn) return;
+  btn.disabled = loading;
+  btn.innerHTML = loading
+    ? '<span class="spinner-border spinner-border-sm me-2"></span>Please wait…'
+    : btn.dataset.originalHtml || btn.innerHTML;
+  if (loading) btn.dataset.originalHtml = btn.innerHTML;
+}
+
+function shakeField(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.add('error');
+  el.animate([{ transform:'translateX(0)' },{ transform:'translateX(-6px)' },{ transform:'translateX(6px)' },{ transform:'translateX(0)' }], { duration: 300 });
+  setTimeout(() => el.classList.remove('error'), 1200);
+}
+</script>
+</body>
+</html>

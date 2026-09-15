@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Detail - Easycon BD</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23e84610'/><text y='72' x='12' font-size='68' font-weight='900' fill='white' font-family='sans-serif'>E</text></svg>">
+</head>
+<body>
+<div id="mobile-menu-placeholder"></div>
+<div id="cart-drawer-placeholder"></div>
+<div id="header-placeholder"></div>
+
+<!-- BREADCRUMB -->
+<div style="background:white;border-bottom:1px solid var(--gray-200);padding:12px 0;">
+  <div class="container-xl">
+    <ul class="breadcrumb-custom">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="categories.html">Categories</a></li>
+      <li class="active" id="bread-product">Product Detail</li>
+    </ul>
+  </div>
+</div>
+
+<!-- PRODUCT DETAIL -->
+<section class="product-detail-section">
+  <div class="container-xl">
+    <div id="product-detail-content">
+      <!-- Loading skeleton -->
+      <div class="row g-4">
+        <div class="col-lg-5">
+          <div class="skeleton br-xl" style="height:400px;"></div>
+        </div>
+        <div class="col-lg-7">
+          <div class="skeleton" style="height:20px;width:40%;margin-bottom:12px;"></div>
+          <div class="skeleton" style="height:32px;width:90%;margin-bottom:8px;"></div>
+          <div class="skeleton" style="height:32px;width:70%;margin-bottom:20px;"></div>
+          <div class="skeleton" style="height:48px;width:30%;margin-bottom:20px;"></div>
+          <div class="skeleton" style="height:80px;margin-bottom:20px;"></div>
+          <div class="skeleton" style="height:52px;border-radius:50px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div style="margin-top:48px;">
+      <div style="display:flex;gap:4px;border-bottom:2px solid var(--gray-200);margin-bottom:24px;">
+        <button class="tab-btn active" onclick="switchTab('description', this)" style="padding:14px 24px;border:none;background:none;font-size:14px;font-weight:600;color:var(--primary);border-bottom:2px solid var(--primary);margin-bottom:-2px;cursor:pointer;">Description</button>
+        <button class="tab-btn" onclick="switchTab('specs', this)" style="padding:14px 24px;border:none;background:none;font-size:14px;font-weight:600;color:var(--gray-600);cursor:pointer;">Specifications</button>
+        <button class="tab-btn" onclick="switchTab('reviews', this)" style="padding:14px 24px;border:none;background:none;font-size:14px;font-weight:600;color:var(--gray-600);cursor:pointer;">Reviews (128)</button>
+      </div>
+
+      <div id="tab-description" class="policy-content" style="padding:24px;">
+        <h2 style="font-size:18px;">Product Description</h2>
+        <p id="product-desc-text">Loading product description...</p>
+        <h2 style="font-size:18px;">Key Features</h2>
+        <ul>
+          <li>Premium quality materials with excellent durability</li>
+          <li>Suitable for all types of construction projects</li>
+          <li>Meets Bangladesh Standards and Specifications</li>
+          <li>Available in multiple sizes and variants</li>
+          <li>Backed by manufacturer warranty</li>
+        </ul>
+      </div>
+
+      <div id="tab-specs" class="policy-content d-none" style="padding:24px;">
+        <h2 style="font-size:18px;">Technical Specifications</h2>
+        <table class="table" id="specs-table">
+          <tbody>
+            <tr><td style="font-weight:600;width:200px;">Brand</td><td id="spec-brand">—</td></tr>
+            <tr><td style="font-weight:600;">Category</td><td id="spec-category">—</td></tr>
+            <tr><td style="font-weight:600;">SKU</td><td>EC-PRD-001</td></tr>
+            <tr><td style="font-weight:600;">Availability</td><td><span class="in-stock">In Stock</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="tab-reviews" class="d-none">
+        <!-- Rating Summary -->
+        <div class="row g-4 mb-4">
+          <div class="col-md-4">
+            <div style="background:white;border-radius:16px;padding:28px;text-align:center;box-shadow:var(--shadow-sm);">
+              <div style="font-size:60px;font-weight:900;color:var(--primary);line-height:1;">4.5</div>
+              <div style="color:var(--accent);font-size:22px;margin:8px 0;">★★★★½</div>
+              <div style="font-size:14px;color:var(--gray-500);">Based on 128 reviews</div>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div style="background:white;border-radius:16px;padding:28px;box-shadow:var(--shadow-sm);">
+              ${[5,4,3,2,1].map(star => `
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+                  <span style="font-size:13px;color:var(--gray-600);width:32px;">${star}★</span>
+                  <div class="progress-bar-custom" style="flex:1;">
+                    <div class="progress-fill" style="width:${star===5?70:star===4?20:star===3?7:star===2?2:1}%;"></div>
+                  </div>
+                  <span style="font-size:13px;color:var(--gray-500);width:32px;">${star===5?70:star===4?20:star===3?7:star===2?2:1}%</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+
+        <!-- Review Cards -->
+        ${[
+          {name:'Md. Rahim', rating:5, date:'Dec 10, 2024', text:'Excellent product! Highly satisfied with the quality. Delivery was also fast.'},
+          {name:'Karim Uddin', rating:4, date:'Dec 5, 2024', text:'Good quality product. Value for money. Will order again.'},
+          {name:'Nasrin Begum', rating:5, date:'Nov 28, 2024', text:'Very happy with this purchase. The product is exactly as described.'},
+        ].map(r => `
+          <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:var(--shadow-sm);">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+              <div style="width:44px;height:44px;border-radius:50%;background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;">${r.name.charAt(0)}</div>
+              <div>
+                <div style="font-weight:700;font-size:14px;">${r.name}</div>
+                <div style="font-size:12px;color:var(--gray-400);">${r.date}</div>
+              </div>
+              <div style="margin-left:auto;color:var(--accent);">${'★'.repeat(r.rating)}</div>
+            </div>
+            <p style="font-size:14px;color:var(--gray-700);margin:0;">${r.text}</p>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- RELATED PRODUCTS -->
+    <div style="margin-top:48px;">
+      <div class="section-header">
+        <div class="section-title-group">
+          <span class="section-label">You Might Also Like</span>
+          <h2 class="section-title">Related Products</h2>
+        </div>
+      </div>
+      <div id="related-products" class="products-grid"></div>
+    </div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="data/products.js"></script>
+<script src="js/api.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/wishlist.js"></script>
+<script src="js/main.js"></script>
+<script src="js/components.js"></script>
+<script>
+renderSharedComponents('products');
+
+let currentProduct = null;
+let selectedQty = 1;
+
+function renderProductDetail(product) {
+  const discount = product.originalPrice > product.price
+    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+    : 0;
+
+  const stars = Array.from({ length: 5 }, (_, i) =>
+    `<i class="bi bi-star${i < Math.floor(product.rating) ? '-fill' : i < product.rating ? '-half' : ''}" style="color:var(--accent);"></i>`
+  ).join('');
+
+  // Build image list: use product.images if available, else fall back to category SVG placeholder
+  const _catCfg = (window.CAT_PLACEHOLDER && window.CAT_PLACEHOLDER[product.category]) || { bg:'#f8f9fa', accent:'#6c757d', icon:'📦' };
+  const _svgPlaceholder = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500"><rect width="500" height="500" fill="${_catCfg.bg}"/><circle cx="250" cy="220" r="100" fill="${_catCfg.accent}18"/><text x="250" y="235" text-anchor="middle" dominant-baseline="middle" font-size="120">${_catCfg.icon}</text><text x="250" y="360" text-anchor="middle" font-family="Inter,sans-serif" font-size="22" fill="${_catCfg.accent}" font-weight="700" opacity="0.8">${(product.brand||'').substring(0,16)}</text></svg>`)}`;
+
+  const galleryImages = (product.images && product.images.length > 0)
+    ? product.images
+    : [_svgPlaceholder];
+  // Pad to at least 4 thumbs
+  while (galleryImages.length < 4) galleryImages.push(galleryImages[0]);
+
+  document.getElementById('product-detail-content').innerHTML = `
+    <div class="row g-4">
+      <div class="col-lg-5">
+        <div class="product-gallery animate-fadeIn">
+          <div class="gallery-main">
+            <img src="${galleryImages[0]}" alt="${product.name}" id="main-product-img"
+              onerror="this.src='${_svgPlaceholder}';this.style.objectFit='contain';">
+          </div>
+          <div class="gallery-thumbs">
+            ${galleryImages.slice(0,4).map((imgSrc, i) => `
+              <div class="gallery-thumb ${i===0?'active':''}" onclick="changeImage(${i}, this)">
+                <img src="${imgSrc}" alt="${product.name}" data-full="${imgSrc}"
+                  onerror="this.src='${_svgPlaceholder}'">
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <div class="product-detail-info animate-fadeInRight">
+          <div class="product-brand-badge">
+            <i class="bi bi-award-fill"></i> ${product.brand}
+          </div>
+          <h1>${product.name}</h1>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+            <div class="product-rating">
+              <div class="rating-stars">${stars}</div>
+              <span class="rating-count">(${product.reviewCount} reviews)</span>
+            </div>
+            <div class="divider" style="height:16px;width:1px;background:var(--gray-200);margin:0;"></div>
+            <span class="in-stock"><i class="bi bi-check-circle-fill me-1"></i>${product.stock > 0 ? `In Stock (${product.stock} units)` : 'Out of Stock'}</span>
+          </div>
+
+          <div class="product-detail-price">
+            <span class="detail-price-current">৳${product.price.toLocaleString()}</span>
+            ${product.originalPrice > product.price ? `<span class="detail-price-original">৳${product.originalPrice.toLocaleString()}</span>` : ''}
+            ${discount > 0 ? `<span class="detail-price-save">Save ${discount}%</span>` : ''}
+          </div>
+
+          <!-- Variants -->
+          <div class="product-variants">
+            <div class="variant-label">Size / Variant</div>
+            <div class="variant-options">
+              ${Object.entries(product.specs || {}).map(([k,v]) => `
+                <div style="padding:6px 14px;border:2px solid var(--gray-200);border-radius:8px;font-size:13px;color:var(--gray-700);">
+                  <strong>${k}:</strong> ${v}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- Quantity -->
+          <div style="margin:20px 0;">
+            <div class="variant-label mb-2">Quantity</div>
+            <div style="display:flex;align-items:center;gap:16px;">
+              <div class="quantity-selector">
+                <button class="qty-btn" onclick="changeQty(-1)">−</button>
+                <input type="number" class="qty-input" id="qty-input" value="1" min="1" max="999" onchange="selectedQty=parseInt(this.value)||1">
+                <button class="qty-btn" onclick="changeQty(1)">+</button>
+              </div>
+              <span style="font-size:13px;color:var(--gray-500);">Max: ${product.stock} units</span>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="detail-actions">
+            <button class="btn-primary-custom" style="flex:2;" onclick="addToCartDetail()">
+              <i class="bi bi-cart-plus"></i> Add to Cart
+            </button>
+            <button class="btn-secondary-custom" onclick="window.location.href='checkout.html'">
+              <i class="bi bi-zap-fill"></i> Buy Now
+            </button>
+            <button class="action-btn" id="detail-wishlist-btn"
+              data-wishlist-btn="${product.id}"
+              data-name="${product.name}"
+              data-brand="${product.brand}"
+              data-price="${product.price}"
+              data-original-price="${product.originalPrice}"
+              style="width:52px;height:52px;font-size:20px;"
+              title="Wishlist">
+              <i class="bi bi-heart"></i>
+            </button>
+          </div>
+
+          <!-- Meta Info -->
+          <div style="margin-top:24px;padding:16px;background:var(--gray-50);border-radius:12px;">
+            <div style="display:flex;gap:24px;flex-wrap:wrap;font-size:13px;color:var(--gray-600);">
+              <div><i class="bi bi-truck me-2 text-primary"></i>Free delivery above ৳5,000</div>
+              <div><i class="bi bi-arrow-counterclockwise me-2 text-primary"></i>7-day returns</div>
+              <div><i class="bi bi-shield-check me-2 text-primary"></i>Genuine product</div>
+            </div>
+          </div>
+
+          <!-- Share -->
+          <div style="display:flex;align-items:center;gap:10px;margin-top:16px;">
+            <span style="font-size:13px;color:var(--gray-600);">Share:</span>
+            <a href="#" class="social-btn" style="width:32px;height:32px;font-size:14px;"><i class="bi bi-facebook"></i></a>
+            <a href="#" class="social-btn" style="width:32px;height:32px;font-size:14px;"><i class="bi bi-whatsapp"></i></a>
+            <button onclick="navigator.clipboard?.writeText(location.href);showToast('Link copied!','success')" class="social-btn" style="width:32px;height:32px;font-size:14px;border:none;cursor:pointer;"><i class="bi bi-link-45deg"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Update meta
+  document.getElementById('bread-product').textContent = product.name;
+  document.getElementById('product-desc-text').textContent = product.description;
+  document.getElementById('spec-brand').textContent = product.brand;
+  document.getElementById('spec-category').textContent = product.category;
+  document.title = `${product.name} - Easycon BD`;
+
+  // Update specs table
+  const specsTable = document.getElementById('specs-table').querySelector('tbody');
+  Object.entries(product.specs || {}).forEach(([k, v]) => {
+    specsTable.innerHTML += `<tr><td style="font-weight:600;width:200px;">${k}</td><td>${v}</td></tr>`;
+  });
+
+  // Wishlist state
+  const wishBtn = document.getElementById('detail-wishlist-btn');
+  if (wishlistManager.has(product.id)) {
+    wishBtn.classList.add('active');
+    wishBtn.querySelector('i').className = 'bi bi-heart-fill';
+  }
+  wishBtn.addEventListener('click', () => {
+    const added = wishlistManager.toggle(product);
+    wishBtn.classList.toggle('active', added);
+    wishBtn.querySelector('i').className = added ? 'bi bi-heart-fill' : 'bi bi-heart';
+    wishBtn.classList.add('heart-pop');
+    setTimeout(() => wishBtn.classList.remove('heart-pop'), 500);
+  });
+}
+
+function changeQty(delta) {
+  const input = document.getElementById('qty-input');
+  const newVal = Math.max(1, Math.min(999, parseInt(input.value) + delta));
+  input.value = newVal;
+  selectedQty = newVal;
+}
+
+function changeImage(idx, el) {
+  document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  // Update main image from the thumb's data-full attribute
+  const fullSrc = el.querySelector('img')?.dataset?.full || el.querySelector('img')?.src;
+  const mainImg = document.getElementById('main-product-img');
+  if (mainImg && fullSrc) {
+    mainImg.style.opacity = '0';
+    setTimeout(() => { mainImg.src = fullSrc; mainImg.style.opacity = '1'; }, 150);
+  }
+}
+
+function switchTab(tab, btn) {
+  document.querySelectorAll('[id^="tab-"]').forEach(t => t.classList.add('d-none'));
+  document.getElementById(`tab-${tab}`).classList.remove('d-none');
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.style.color = 'var(--gray-600)';
+    b.style.borderBottom = 'none';
+  });
+  btn.style.color = 'var(--primary)';
+  btn.style.borderBottom = '2px solid var(--primary)';
+}
+
+function addToCartDetail() {
+  if (currentProduct) {
+    cartManager.addItem(currentProduct, selectedQty);
+    const btn = document.querySelector('.detail-actions .btn-primary-custom');
+    btn.innerHTML = '<i class="bi bi-check-lg"></i> Added!';
+    btn.style.background = 'var(--success)';
+    setTimeout(() => {
+      btn.innerHTML = '<i class="bi bi-cart-plus"></i> Add to Cart';
+      btn.style.background = '';
+    }, 2000);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const params = new URLSearchParams(window.location.search);
+  const id = parseInt(params.get('id')) || 1;
+
+  const product = DUMMY_DATA.products.find(p => p.id === id) || DUMMY_DATA.products[0];
+  currentProduct = product;
+  renderProductDetail(product);
+
+  // Related products
+  const related = DUMMY_DATA.products.filter(p => p.id !== product.id && p.category === product.category).slice(0, 4);
+  document.getElementById('related-products').innerHTML = related.map(p => renderProductCard(p)).join('');
+});
+</script>
+</body>
+</html>

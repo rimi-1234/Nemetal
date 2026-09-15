@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Nematel - New Materials & Technology Ltd. One Stop Building Materials Supplier in Bangladesh.">
+  <title>Nematel - New Materials & Technology Ltd. | Building Materials Bangladesh</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23e84610'/><path d='M20 80V20h10L60 62V20h10v60H60L30 38v42z' fill='white'/></svg>">
+</head>
+<body>
+
+<!-- PAGE LOADER -->
+<div id="page-loader" class="page-loader">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+    <img src="assets/logo.svg" alt="Nematel" style="height:52px;">
+    <div class="loader-ring"></div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div id="toast-container" class="toast-container-custom"></div>
+
+<!-- MOBILE MENU OVERLAY -->
+<div id="mobile-menu-overlay" class="mobile-menu-overlay" onclick="closeMobileMenu()"></div>
+
+<!-- MOBILE MENU -->
+<nav id="mobile-menu" class="mobile-menu">
+  <div style="background:var(--secondary);padding:18px 16px;display:flex;align-items:center;justify-content:space-between;">
+    <img src="assets/logo.svg" alt="Nematel" style="height:40px;filter:brightness(0) invert(1);" onerror="this.outerHTML='<span style=\'color:white;font-weight:900;font-size:18px;\'>NEMATEL</span>'">
+    <button id="close-mobile-menu" onclick="closeMobileMenu()" style="background:rgba(255,255,255,0.1);border:none;color:white;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+  <div style="padding:12px 16px;border-bottom:1px solid var(--gray-200);">
+    <form onsubmit="event.preventDefault();window.location.href='product-listing.html?search='+encodeURIComponent(this.querySelector('input').value)" style="display:flex;gap:8px;background:var(--gray-100);border-radius:8px;padding:8px 12px;">
+      <i class="bi bi-search" style="color:var(--gray-500);"></i>
+      <input type="text" placeholder="Search products..." style="border:none;background:none;outline:none;font-size:14px;flex:1;">
+    </form>
+  </div>
+  <nav style="padding:8px 0;">
+    <a href="index.html" class="mob-nav-link active"><i class="bi bi-house-fill"></i> Home</a>
+    <a href="flash-sale.html" class="mob-nav-link" style="color:var(--accent);"><i class="bi bi-lightning-fill"></i> Flash Sale</a>
+    <a href="categories.html" class="mob-nav-link"><i class="bi bi-grid-fill"></i> All Categories</a>
+    <a href="brands.html" class="mob-nav-link"><i class="bi bi-award-fill"></i> All Brands</a>
+    <a href="compare.html" class="mob-nav-link"><i class="bi bi-arrow-left-right"></i> Compare</a>
+    <a href="about.html" class="mob-nav-link"><i class="bi bi-info-circle-fill"></i> About Us</a>
+    <a href="contact.html" class="mob-nav-link"><i class="bi bi-telephone-fill"></i> Contact</a>
+    <div style="height:1px;background:var(--gray-200);margin:8px 0;"></div>
+    <a href="auth.html" class="mob-nav-link"><i class="bi bi-person-fill"></i> Login / Register</a>
+    <a href="become-seller.html" class="mob-nav-link" style="color:var(--primary);"><i class="bi bi-shop"></i> Become a Seller</a>
+  </nav>
+</nav>
+
+<style>
+.mob-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 20px;
+  color: var(--gray-700);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: all 0.2s;
+}
+.mob-nav-link i { width: 20px; color: var(--gray-400); }
+.mob-nav-link.active, .mob-nav-link:hover {
+  background: var(--primary-bg);
+  color: var(--primary);
+  border-left-color: var(--primary);
+}
+.mob-nav-link.active i, .mob-nav-link:hover i { color: var(--primary); }
+</style>
+
+<!-- CART DRAWER -->
+<div id="cart-drawer-overlay" class="cart-drawer-overlay" onclick="closeCartDrawer()"></div>
+<div id="cart-drawer" class="cart-drawer">
+  <div class="cart-drawer-header">
+    <h5><i class="bi bi-cart3" style="color:var(--primary);"></i> Shopping Cart</h5>
+    <button id="close-cart-drawer" onclick="closeCartDrawer()" style="background:var(--gray-100);border:none;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--gray-700);">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+  <div class="cart-drawer-body" id="cart-drawer-body"></div>
+  <div class="cart-drawer-footer" id="cart-drawer-footer" style="display:none;">
+    <div style="margin-bottom:10px;">
+      <div style="height:4px;background:var(--gray-100);border-radius:4px;overflow:hidden;margin-bottom:6px;">
+        <div class="progress-fill" id="drawer-ship-progress" style="width:0%;background:linear-gradient(90deg,var(--primary),var(--accent));"></div>
+      </div>
+      <div style="font-size:11px;color:var(--gray-500);" id="drawer-ship-msg">Add more for FREE shipping</div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <div>
+        <span style="font-size:12px;color:var(--gray-500);" id="cart-drawer-count">0 items</span>
+        <div style="font-size:11px;color:var(--success);" id="drawer-savings"></div>
+      </div>
+      <div>
+        <div style="font-size:11px;color:var(--gray-400);text-align:right;">Total</div>
+        <span style="font-size:20px;font-weight:900;color:var(--primary);" id="cart-drawer-total">৳0</span>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <a href="cart.html" class="btn-outline-primary-custom" style="flex:1;font-size:13px;padding:10px 12px;justify-content:center;">
+        <i class="bi bi-cart me-1"></i>View Cart
+      </a>
+      <a href="checkout.html" class="btn-primary-custom" style="flex:1;font-size:13px;padding:10px 12px;justify-content:center;">
+        <i class="bi bi-lock-fill me-1"></i>Checkout
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- NOTIFICATION PANEL -->
+<div id="notif-overlay" style="position:fixed;inset:0;z-index:1035;display:none;" onclick="closeNotifications()"></div>
+<div id="notification-panel" class="notification-panel" style="position:fixed;top:72px;right:16px;">
+  <div class="notification-header">
+    <h6><i class="bi bi-bell-fill" style="color:var(--primary);"></i> Notifications <span class="badge-count" style="background:var(--danger);position:static;display:inline-flex;">3</span></h6>
+    <button onclick="markAllRead()">Mark all read</button>
+  </div>
+  <div id="notif-list">
+    <div class="notification-item unread">
+      <div class="notification-dot" style="background:var(--primary-bg);color:var(--primary);">🛒</div>
+      <div class="notif-text">
+        <div class="notif-title">Flash Sale Started!</div>
+        <div class="notif-msg">Up to 40% off on construction materials. Hurry!</div>
+      </div>
+      <span class="notif-time">2m</span>
+    </div>
+    <div class="notification-item unread">
+      <div class="notification-dot" style="background:#d1ecf1;color:#0891b2;">📦</div>
+      <div class="notif-text">
+        <div class="notif-title">Order Dispatched</div>
+        <div class="notif-msg">Your order EC-2024-002 has been shipped.</div>
+      </div>
+      <span class="notif-time">1h</span>
+    </div>
+    <div class="notification-item unread">
+      <div class="notification-dot" style="background:#d4edda;color:#27ae60;">✅</div>
+      <div class="notif-text">
+        <div class="notif-title">Order Delivered</div>
+        <div class="notif-msg">EC-2024-001 delivered successfully!</div>
+      </div>
+      <span class="notif-time">2d</span>
+    </div>
+    <div class="notification-item">
+      <div class="notification-dot" style="background:#fff3cd;color:#f39c12;">🎁</div>
+      <div class="notif-text">
+        <div class="notif-title">Special Offer</div>
+        <div class="notif-msg">Use code SAVE10 for 10% off your next order.</div>
+      </div>
+      <span class="notif-time">5d</span>
+    </div>
+  </div>
+  <a href="#" style="display:block;text-align:center;padding:12px;font-size:13px;font-weight:600;color:var(--primary);border-top:1px solid var(--gray-100);text-decoration:none;">View All Notifications</a>
+</div>
+
+<!-- ============================================================
+     TOP BAR (Simplified — NOT sticky)
+     ============================================================ -->
+<div class="top-bar">
+  <div class="container-xl">
+    <div class="d-flex align-items-center justify-content-between gap-3">
+      <div class="d-flex align-items-center gap-3" style="min-width:0;overflow:hidden;">
+        <span class="top-bar-marquee flex-shrink-0"><i class="bi bi-lightning-fill me-1"></i> FLASH SALE</span>
+        <div style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:0.85;">
+          🎉 Free Shipping on orders above ৳5,000 &nbsp;|&nbsp; 📦 Fast Delivery across Bangladesh
+        </div>
+      </div>
+      <div class="d-flex align-items-center gap-2 flex-shrink-0">
+        <a href="tel:01955008864" style="color:rgba(255,255,255,0.85);font-size:12px;text-decoration:none;">
+          <i class="bi bi-telephone-fill me-1"></i>01955-008864
+        </a>
+        <div class="divider"></div>
+        <a href="become-seller.html" style="color:rgba(255,255,255,0.85);font-size:12px;text-decoration:none;">
+          <i class="bi bi-shop me-1"></i>Sell on Nematel
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     STICKY HEADER WRAPPER (Header + Nav together)
+     ============================================================ -->
+<div class="sticky-header-wrapper" id="sticky-wrap">
+
+<!-- ============================================================
+     MAIN HEADER
+     ============================================================ -->
+<header class="main-header">
+  <div class="container-xl">
+    <div class="header-inner">
+      <!-- Mobile Menu Toggle -->
+      <button id="mobile-menu-btn" onclick="openMobileMenu()" class="d-lg-none" style="background:none;border:none;padding:6px;cursor:pointer;color:var(--gray-700);flex-shrink:0;">
+        <i class="bi bi-list" style="font-size:26px;"></i>
+      </button>
+
+      <!-- Logo -->
+      <a href="index.html" class="header-logo text-decoration-none flex-shrink-0">
+        <img src="assets/logo.svg" alt="Nematel" style="height:48px;max-width:200px;"
+          onerror="this.outerHTML='<div style=\'display:flex;align-items:center;gap:8px;\'><div class=\'logo-icon\'>N</div><div class=\'logo-text\'><span class=\'brand-name\'>Nematel</span><span class=\'brand-tagline\'>New Materials & Technology</span></div></div>'">
+      </a>
+
+      <!-- Search Bar (Centered, No Category) -->
+      <div class="header-search d-none d-lg-block" style="flex:1;max-width:580px;margin:0 auto;">
+        <form id="search-form">
+          <div class="search-container" style="position:relative;border-radius:50px;">
+            <input type="text" id="main-search" class="search-input" placeholder="Search for building materials, brands, categories..." style="padding-left:20px;">
+            <button type="submit" class="search-btn" style="border-radius:0 50px 50px 0;">
+              <i class="bi bi-search"></i>
+            </button>
+            <div id="search-dropdown" class="search-dropdown"></div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Header Actions -->
+      <div class="header-actions" style="flex-shrink:0;gap:4px;">
+        <!-- Mobile Search Toggle -->
+        <button id="mobile-search-btn" class="header-action-btn d-lg-none" onclick="toggleMobileSearch()" style="min-width:44px;">
+          <i class="bi bi-search btn-icon"></i>
+        </button>
+
+        <!-- Notification Bell -->
+        <div class="header-action-btn notif-pulse" id="notif-btn" onclick="toggleNotifications()" style="cursor:pointer;position:relative;">
+          <i class="bi bi-bell btn-icon"></i>
+          <span class="btn-label d-none d-sm-block">Alerts</span>
+          <span class="badge-count" style="background:var(--danger);">3</span>
+        </div>
+
+        <!-- Wishlist -->
+        <a href="wishlist.html" class="header-action-btn" style="position:relative;">
+          <i class="bi bi-heart btn-icon"></i>
+          <span class="btn-label d-none d-sm-block">Wishlist</span>
+          <span class="badge-count d-none" data-wishlist-count>0</span>
+        </a>
+
+        <!-- Compare -->
+        <a href="compare.html" class="header-action-btn d-none d-md-flex">
+          <i class="bi bi-arrow-left-right btn-icon"></i>
+          <span class="btn-label d-none d-sm-block">Compare</span>
+          <span class="badge-count d-none" id="compare-count">0</span>
+        </a>
+
+        <!-- Cart -->
+        <button class="header-action-btn" onclick="openCartDrawer()" style="position:relative;">
+          <i class="bi bi-cart3 btn-icon"></i>
+          <span class="btn-label d-none d-sm-block">Cart</span>
+          <span class="badge-count d-none cart-count">0</span>
+        </button>
+
+        <!-- Account -->
+        <a href="dashboard.html" class="header-action-btn d-none d-md-flex" data-auth="user" style="display:none!important;">
+          <i class="bi bi-person-fill btn-icon"></i>
+          <span class="btn-label d-none d-sm-block" data-user-name>Account</span>
+        </a>
+        <a href="auth.html" class="header-action-btn d-none d-md-flex" data-auth="guest">
+          <i class="bi bi-person btn-icon"></i>
+          <span class="btn-label d-none d-sm-block">Login</span>
+        </a>
+      </div>
+    </div>
+    <!-- Mobile Search Bar -->
+    <div id="mobile-search-bar" style="display:none;padding-bottom:10px;">
+      <form onsubmit="event.preventDefault();window.location.href='product-listing.html?search='+encodeURIComponent(this.querySelector('input').value)">
+        <div class="search-container" style="border-radius:50px;">
+          <input type="text" class="search-input" placeholder="Search products..." style="padding-left:20px;">
+          <button class="search-btn" style="border-radius:0 50px 50px 0;"><i class="bi bi-search"></i></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     NAVIGATION BAR
+     ============================================================ -->
+<nav class="main-nav d-none d-lg-block" id="main-nav">
+  <div class="container-xl" style="position:relative;">
+    <div class="nav-inner" style="display:flex;align-items:stretch;position:relative;">
+
+      <!-- Compact Logo (hidden until header-minimal) -->
+      <div class="compact-nav-logo">
+        <a href="index.html" style="display:flex;align-items:center;padding:0 4px;">
+          <img src="assets/logo.svg" alt="Nematel" style="height:30px;filter:brightness(0) invert(1);" onerror="this.outerHTML='<span style=\'color:white;font-weight:900;font-size:14px;\'>NEMATEL</span>'">
+        </a>
+      </div>
+
+      <!-- All Categories Button -->
+      <button class="nav-categories-btn" id="cat-btn" aria-expanded="false">
+        <i class="bi bi-grid-3x3-gap-fill me-1"></i>
+        All Categories
+        <i class="bi bi-chevron-down" id="cat-chevron" style="font-size:11px;margin-left:4px;transition:transform 0.3s;"></i>
+      </button>
+
+      <!-- Nav Links -->
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="flash-sale.html" class="flash-sale-link"><i class="bi bi-lightning-fill"></i> Flash Sale</a></li>
+        <li><a href="brands.html">All Brands</a></li>
+        <li><a href="product-listing.html">Products</a></li>
+        <li><a href="compare.html">Compare</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+
+      <!-- Compact Search (hidden until header-minimal) -->
+      <div class="compact-nav-search">
+        <form class="compact-nav-search-inner" onsubmit="event.preventDefault();window.location.href='product-listing.html?search='+encodeURIComponent(this.querySelector('input').value)">
+          <i class="bi bi-search" style="color:rgba(255,255,255,0.5);font-size:13px;"></i>
+          <input type="text" placeholder="Search products...">
+          <button type="submit"><i class="bi bi-search"></i></button>
+        </form>
+      </div>
+
+      <!-- Nav Right -->
+      <div class="nav-right" style="display:flex;align-items:center;gap:4px;margin-left:auto;">
+        <a href="become-seller.html" style="color:rgba(255,255,255,0.8);font-size:13px;display:flex;align-items:center;gap:5px;text-decoration:none;padding:6px 12px;border-radius:6px;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background=''">
+          <i class="bi bi-shop-window"></i> Sell
+        </a>
+        <!-- Compact Cart (hidden until header-minimal) -->
+        <button class="compact-nav-cart" onclick="openCartDrawer()" title="Cart">
+          <i class="bi bi-cart3"></i>
+          <span class="cart-count">0</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MEGA MENU FLYOUT (Full Width)
+       ============================================================ -->
+  <div id="mega-panel" class="mega-panel">
+    <div class="container-xl p-0">
+      <div class="mega-panel-inner">
+        <!-- Left: Category Sidebar -->
+        <div class="mega-cat-sidebar" id="mega-cat-sidebar">
+          <!-- Rendered by JS -->
+        </div>
+        <!-- Right: Dynamic Content -->
+        <div class="mega-cat-content" id="mega-cat-content">
+          <div style="display:flex;align-items:center;justify-content:center;height:100%;min-height:200px;color:var(--gray-400);">
+            <div style="text-align:center;">
+              <i class="bi bi-grid-3x3-gap" style="font-size:48px;opacity:0.3;"></i>
+              <p style="margin-top:8px;font-size:14px;">Hover a category to explore</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+</div><!-- end .sticky-header-wrapper -->
+
+<!-- ============================================================
+     HERO SECTION (No Static Sidebar)
+     ============================================================ -->
+<section class="hero-section">
+  <div class="container-xl">
+    <div class="hero-grid-2col">
+      <!-- Hero Slider (Full Width) -->
+      <div class="hero-slider-wrapper" style="height:420px;">
+        <div class="hero-slider" id="hero-slider">
+
+          <!-- SLIDE 1 -->
+          <div class="hero-slide" style="display:flex;height:420px;">
+            <a href="product-listing.html" class="hero-slide-link" aria-label="Shop construction materials">
+              <div class="hero-slide-bg" style="background-image:url('assets/images/banner1.jpg');"></div>
+            </a>
+          </div>
+
+          <!-- SLIDE 2 -->
+          <div class="hero-slide" style="display:none;height:420px;">
+            <a href="categories.html" class="hero-slide-link" aria-label="Browse all categories">
+              <div class="hero-slide-bg" style="background-image:url('assets/images/banner2.jpg');"></div>
+            </a>
+          </div>
+
+          <!-- SLIDE 3 -->
+          <div class="hero-slide" style="display:none;height:420px;">
+            <a href="product-listing.html?category=paint-coating" class="hero-slide-link" aria-label="Shop paints material">
+              <div class="hero-slide-bg" style="background-image:url('assets/images/banner3.jpg');"></div>
+            </a>
+          </div>
+
+          <!-- SLIDE 4 -->
+          <div class="hero-slide" style="display:none;height:420px;">
+            <a href="product-listing.html" class="hero-slide-link" aria-label="Shop building materials">
+              <div class="hero-slide-bg" style="background-image:url('assets/images/banner4.jpg');"></div>
+            </a>
+          </div>
+
+        </div><!-- end hero-slider -->
+
+        <!-- Slider Arrows -->
+        <button class="slider-arrow prev" onclick="sliderPrev()"><i class="bi bi-chevron-left"></i></button>
+        <button class="slider-arrow next" onclick="sliderNext()"><i class="bi bi-chevron-right"></i></button>
+        <!-- Slider Dots -->
+        <div class="slider-controls">
+          <button class="slider-dot active" onclick="goToSlide(0)"></button>
+          <button class="slider-dot" onclick="goToSlide(1)"></button>
+          <button class="slider-dot" onclick="goToSlide(2)"></button>
+          <button class="slider-dot" onclick="goToSlide(3)"></button>
+        </div>
+      </div>
+
+      <!-- Right Banners -->
+      <div class="hero-banners">
+        <a href="product-listing.html?category=paint-coating" class="hero-banner" style="background:linear-gradient(135deg,#7c3aed,#4c1d95);display:block;text-decoration:none;">
+          <div class="hero-banner-content">
+            <span style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1px;">Up to 30% OFF</span>
+            <h4 style="color:white;font-size:14px;font-weight:700;margin:4px 0 0;">Paint &amp; Coatings</h4>
+          </div>
+          <div style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:52px;opacity:0.2;">🎨</div>
+        </a>
+        <a href="product-listing.html?category=tiles-flooring" class="hero-banner" style="background:linear-gradient(135deg,#0369a1,#0284c7);display:block;text-decoration:none;">
+          <div class="hero-banner-content">
+            <span style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1px;">New Arrival</span>
+            <h4 style="color:white;font-size:14px;font-weight:700;margin:4px 0 0;">Premium Tiles</h4>
+          </div>
+          <div style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:52px;opacity:0.2;">🔲</div>
+        </a>
+        <a href="product-listing.html?category=sanitary-ware" class="hero-banner" style="background:linear-gradient(135deg,#065f46,#059669);display:block;text-decoration:none;">
+          <div class="hero-banner-content">
+            <span style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1px;">Best Price</span>
+            <h4 style="color:white;font-size:14px;font-weight:700;margin:4px 0 0;">Sanitary Ware</h4>
+          </div>
+          <div style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:52px;opacity:0.2;">🚿</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BADGES -->
+<div style="background:var(--white);border-bottom:1px solid var(--gray-200);padding:14px 0;">
+  <div class="container-xl">
+    <div class="row g-2 text-center justify-content-center">
+      <div class="col-6 col-md-3"><div style="display:flex;align-items:center;justify-content:center;gap:10px;padding:6px 0;"><i class="bi bi-truck" style="font-size:22px;color:var(--primary);"></i><div style="text-align:left;"><div style="font-size:13px;font-weight:700;">Free Shipping</div><div style="font-size:11px;color:var(--gray-500);">Orders above ৳5,000</div></div></div></div>
+      <div class="col-6 col-md-3"><div style="display:flex;align-items:center;justify-content:center;gap:10px;padding:6px 0;"><i class="bi bi-shield-check" style="font-size:22px;color:var(--primary);"></i><div style="text-align:left;"><div style="font-size:13px;font-weight:700;">Genuine Products</div><div style="font-size:11px;color:var(--gray-500);">100% Authentic</div></div></div></div>
+      <div class="col-6 col-md-3"><div style="display:flex;align-items:center;justify-content:center;gap:10px;padding:6px 0;"><i class="bi bi-arrow-counterclockwise" style="font-size:22px;color:var(--primary);"></i><div style="text-align:left;"><div style="font-size:13px;font-weight:700;">7-Day Return</div><div style="font-size:11px;color:var(--gray-500);">Easy return policy</div></div></div></div>
+      <div class="col-6 col-md-3"><div style="display:flex;align-items:center;justify-content:center;gap:10px;padding:6px 0;"><i class="bi bi-headset" style="font-size:22px;color:var(--primary);"></i><div style="text-align:left;"><div style="font-size:13px;font-weight:700;">24/7 Support</div><div style="font-size:11px;color:var(--gray-500);">Dedicated team</div></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURED CATEGORIES -->
+<section class="section" style="background:#fafafa;">
+  <div class="container-xl">
+    <div class="section-header">
+      <div class="section-title-group">
+        <span class="section-label">Browse by</span>
+        <h2 class="section-title">Featured Categories</h2>
+      </div>
+      <a href="categories.html" class="view-all-btn">View All <i class="bi bi-arrow-right"></i></a>
+    </div>
+
+    <!-- 6 × 2 grid = 12 items, perfectly aligned on all breakpoints -->
+    <div class="category-grid">
+
+      <a href="product-listing.html?category=construction-chemical" class="category-card">
+        <div class="cat-card-icon" style="width:68px;height:68px;border-radius:50%;background:#fff4f1;border:2px solid #ffddd5;transition:all 0.3s;">
+          <i class="bi bi-flask" style="color:var(--primary);font-size:28px;position:relative;z-index:1;"></i>
+        </div>
+        <div class="cat-card-name">Construction Chemical</div>
+        <div class="cat-card-count">145 Products</div>
+      </a>
+
+      <a href="product-listing.html?category=cement-aggregate" class="category-card">
+        <div class="cat-card-icon" style="width:68px;height:68px;border-radius:50%;background:#fff4f1;border:2px solid #ffddd5;transition:all 0.3s;">
+          <i class="bi bi-layers" style="color:var(--primary);font-size:28px;position:relative;z-index:1;"></i>
+        </div>
+        <div class="cat-card-name">Cement &amp; Aggregate</div>
+        <div class="cat-card-count">89 Products</div>
+      </a>
+
+      <a href="product-listing.html?category=tmt-steel-bar" class="category-card">
+        <div class="cat-card-icon" style="width:68px;height:68px;border-radius:50%;background:#fff4f1;border:2px solid #ffddd5;transition:all 0.3s;">
+          <i class="bi bi-wrench-adjustable" style="color:var(--primary);font-size:28px;position:relative;z-index:1;"></i>
+        </div>
+        <div class="cat-card-name">TMT Steel Bar</div>
+        <div class="cat-card-count">67 Products</div>
+      </a>
+
+      <a href="product-listing.html?category=bricks-blocks" class="category-card">
+        <div class="cat-card-icon" style="width:68px;height:68px;border-radius:50%;background:#fff4f1;border:2px solid #ffddd5;transition:all 0.3s;">
+          <i class="bi bi-bricks" style="color:var(--primary);font-size:28px;position:relative;z-index:1;"></i>
+        </div>
+        <div class="cat-card-name">Bricks &amp; Blocks</div>
+        <div class="cat-card-count">112 Products</div>
+      </a>
+
+      <a href="product-listing.html?category=doors" class="category-card">
+        <div class="cat-card-icon" style="width:68px;height:68px;border-radius:50%;background:#fff4f1;border:2px solid #ffddd5;transition:all 0.3s;">
+          <i class="bi bi-door-closed" style="color:var(--primary);font-size:28px;position:relative;z-index:1;"></i>
+        </div>
+        <div class="cat-card-name">Doors</div>
+        <div class="cat-card-count">78 Products</div>
+      </a>
+
+      <a href="product-listing.html?category=door-fittings" class="category-card">
+        <div class="cat-card-icon" style="width:68px;height:68px;border-radius:50%;background:#fff4f1;border:2px solid #ffddd5;transition:all 0.3s;">
+          <i class="bi bi-key" style="color:var(--primary);font-size:28px;position:relative;z-index:1;"></i>
+        </div>
+        <div class="cat-card-name">Door Fittings</div>
+        <div class="cat-card-count">234 Products</div>
+      </a>
+
+      <a href="product-listing.html?category=electric-materials" class="category-card">
+        <div class="cat-card-icon" style="width:68px;height:68px;border-radius:50%;background:#fff4f1;border:2px solid #ffddd5;transition:all 0.3s;">
+          <i class="bi bi-lightning-charge" style="color:var(--primary);font-size:28px;position:relative;z-index:1;"></i>
+        </div>
+        <div class="cat-card-name">Electric Materials</div>
+        <div class="cat-card-count">389 Products</div>
+      </a>
+
+      <a href="product-listing.html?category=pipe-fitting" class="category-card">
+        <div class="cat-card-icon" style="width:68px;height:68px;border-radius:50%;background:#fff4f1;border:2px solid #ffddd5;transition:all 0.3s;">
+          <i class="bi bi-moisture" style="color:var(--primary);font-size:28px;position:relative;z-index:1;"></i>
+        </div>
+        <div class="cat-card-name">Pipe &amp; Fitting</div>
+        <div class="cat-card-count">156 Products</div>
+      </a>
+
+      <a href="product-listing.html?category=sanitary-ware" class="category-card">
+        <div class="cat-card-icon" style="width:68px;height:68px;border-radius:50%;background:#fff4f1;border:2px solid #ffddd5;transition:all 0.3s;">
+          <i class="bi bi-droplet-half" style="color:var(--primary);font-size:28px;position:relative;z-index:1;"></i>
+        </div>
+        <div class="cat-card-name">Sanitary Ware</div>
+        <div class="cat-card-count">203 Products</div>
+      </a>
+
+      <a href="product-listing.html?category=paint-coating" class="category-card">
+        <div class="cat-card-icon" style="width:68px;height:68px;border-radius:50%;background:#fff4f1;border:2px solid #ffddd5;transition:all 0.3s;">
+          <i class="bi bi-palette2" style="color:var(--primary);font-size:28px;position:relative;z-index:1;"></i>
+        </div>
+        <div class="cat-card-name">Paint &amp; Coating</div>
+        <div class="cat-card-count">167 Products</div>
+      </a>
+
+      <a href="product-listing.html?category=tiles-flooring" class="category-card">
+        <div class="cat-card-icon" style="width:68px;height:68px;border-radius:50%;background:#fff4f1;border:2px solid #ffddd5;transition:all 0.3s;">
+          <i class="bi bi-grid-3x3" style="color:var(--primary);font-size:28px;position:relative;z-index:1;"></i>
+        </div>
+        <div class="cat-card-name">Tiles &amp; Flooring</div>
+        <div class="cat-card-count">298 Products</div>
+      </a>
+
+      <a href="product-listing.html?category=safety-equipment" class="category-card">
+        <div class="cat-card-icon" style="width:68px;height:68px;border-radius:50%;background:#fff4f1;border:2px solid #ffddd5;transition:all 0.3s;">
+          <i class="bi bi-shield-check" style="color:var(--primary);font-size:28px;position:relative;z-index:1;"></i>
+        </div>
+        <div class="cat-card-name">Safety Equipment</div>
+        <div class="cat-card-count">94 Products</div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROMO BANNERS -->
+<section class="section section-bg-white" style="padding-top:0;padding-bottom:32px;">
+  <div class="container-xl">
+    <div class="promo-grid">
+      <a href="product-listing.html?category=paint-coating" class="promo-banner reveal-left" style="background:linear-gradient(135deg,#7c3aed,#4c1d95);">
+        <div class="promo-content"><div class="tag">Special Offer</div><h3>Paint &amp;<br>Coatings</h3><div class="promo-off">30% OFF</div></div>
+        <div style="position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:72px;opacity:0.15;">🎨</div>
+      </a>
+      <a href="product-listing.html?category=tmt-steel-bar" class="promo-banner reveal" style="background:linear-gradient(135deg,#1b2a4a,#0f172a);">
+        <div class="promo-content"><div class="tag">Limited Stock</div><h3>Steel Rods<br>Best Price</h3><div class="promo-off">15% OFF</div></div>
+        <div style="position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:72px;opacity:0.1;">🔩</div>
+      </a>
+      <a href="product-listing.html?category=tiles-flooring" class="promo-banner reveal-right" style="background:linear-gradient(135deg,#065f46,#022c22);">
+        <div class="promo-content"><div class="tag">New Arrivals</div><h3>Premium Tiles<br>Collection</h3><div class="promo-off">20% OFF</div></div>
+        <div style="position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:72px;opacity:0.15;">🔲</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FLASH SALE -->
+<section class="flash-sale-section">
+  <div class="container-xl">
+    <div class="flash-sale-header">
+      <div class="flash-badge"><i class="bi bi-lightning-fill"></i> FLASH SALE</div>
+      <div>
+        <div class="flash-timer-label">Ends in:</div>
+        <div class="flash-countdown" data-countdown="auto">
+          <div class="countdown-block"><span class="countdown-num" data-hours>00</span><span class="countdown-label">Hours</span></div>
+          <span class="countdown-sep">:</span>
+          <div class="countdown-block"><span class="countdown-num" data-mins>00</span><span class="countdown-label">Mins</span></div>
+          <span class="countdown-sep">:</span>
+          <div class="countdown-block"><span class="countdown-num" data-secs>00</span><span class="countdown-label">Secs</span></div>
+        </div>
+      </div>
+      <a href="flash-sale.html" class="view-all-btn ms-auto" style="border-color:rgba(255,255,255,0.3);color:white;">View All <i class="bi bi-arrow-right"></i></a>
+    </div>
+    <div id="flash-sale-products" class="products-grid"></div>
+  </div>
+</section>
+
+<!-- FEATURED PRODUCTS -->
+<section class="section section-bg-white">
+  <div class="container-xl">
+    <div class="section-header">
+      <div class="section-title-group"><span class="section-label">Handpicked</span><h2 class="section-title">Featured Products</h2></div>
+      <a href="product-listing.html" class="view-all-btn">View All <i class="bi bi-arrow-right"></i></a>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;" id="category-tabs">
+      <button class="cat-tab active" onclick="filterProducts('all',this)">All</button>
+      <button class="cat-tab" onclick="filterProducts('paint-coating',this)">Paint</button>
+      <button class="cat-tab" onclick="filterProducts('tmt-steel-bar',this)">Steel</button>
+      <button class="cat-tab" onclick="filterProducts('tiles-flooring',this)">Tiles</button>
+      <button class="cat-tab" onclick="filterProducts('construction-chemical',this)">Chemicals</button>
+    </div>
+    <style>
+    .cat-tab { padding:8px 20px;border:2px solid var(--gray-200);background:white;color:var(--gray-700);border-radius:50px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.25s; }
+    .cat-tab.active,.cat-tab:hover { background:var(--primary);border-color:var(--primary);color:white; }
+    </style>
+    <div id="featured-products" class="products-grid"></div>
+  </div>
+</section>
+
+<!-- TOP BRANDS -->
+<section class="section brands-section">
+  <div class="container-xl">
+    <div class="section-header">
+      <div class="section-title-group"><span class="section-label">Trusted</span><h2 class="section-title">Top Brands</h2></div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button onclick="document.querySelector('.brands-carousel').scrollBy({left:-200,behavior:'smooth'})" style="width:36px;height:36px;border:2px solid var(--gray-200);background:white;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--gray-200)'"><i class="bi bi-chevron-left"></i></button>
+        <button onclick="document.querySelector('.brands-carousel').scrollBy({left:200,behavior:'smooth'})" style="width:36px;height:36px;border:2px solid var(--gray-200);background:white;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--gray-200)'"><i class="bi bi-chevron-right"></i></button>
+        <a href="brands.html" class="view-all-btn">View All <i class="bi bi-arrow-right"></i></a>
+      </div>
+    </div>
+    <div class="brands-carousel">
+      <a href="product-listing.html?brand=asia-paint" class="brand-card text-decoration-none"><div class="brand-name-text" style="font-size:16px;font-weight:900;color:#e84610;">Asia Paint</div></a>
+      <a href="product-listing.html?brand=rfl" class="brand-card text-decoration-none"><div class="brand-name-text" style="font-size:16px;font-weight:900;color:#0066cc;">RFL</div></a>
+      <a href="product-listing.html?brand=berger-paints" class="brand-card text-decoration-none"><div class="brand-name-text" style="font-size:16px;font-weight:900;color:#003087;">Berger</div></a>
+      <a href="product-listing.html?brand=tata" class="brand-card text-decoration-none"><div class="brand-name-text" style="font-size:16px;font-weight:900;color:#1b2a4a;">TATA</div></a>
+      <a href="product-listing.html?brand=ultra" class="brand-card text-decoration-none"><div class="brand-name-text" style="font-size:16px;font-weight:900;color:#7c3aed;">Ultra</div></a>
+      <a href="product-listing.html?brand=brb" class="brand-card text-decoration-none"><div class="brand-name-text" style="font-size:16px;font-weight:900;color:#059669;">BRB</div></a>
+      <a href="product-listing.html?brand=mostafa-door" class="brand-card text-decoration-none"><div class="brand-name-text" style="font-size:15px;font-weight:900;color:#b45309;">Mostafa Door</div></a>
+      <a href="product-listing.html?brand=bsrm" class="brand-card text-decoration-none"><div class="brand-name-text" style="font-size:16px;font-weight:900;color:#e84610;">BSRM</div></a>
+      <a href="product-listing.html?brand=eco-ceramics" class="brand-card text-decoration-none"><div class="brand-name-text" style="font-size:14px;font-weight:900;color:#0369a1;">Eco Ceramics</div></a>
+      <a href="product-listing.html?brand=crown-cement" class="brand-card text-decoration-none"><div class="brand-name-text" style="font-size:15px;font-weight:900;color:#374151;">Crown</div></a>
+      <a href="product-listing.html?brand=walton" class="brand-card text-decoration-none"><div class="brand-name-text" style="font-size:16px;font-weight:900;color:#dc2626;">Walton</div></a>
+      <a href="product-listing.html?brand=ag-galvanizing" class="brand-card text-decoration-none"><div class="brand-name-text" style="font-size:15px;font-weight:900;color:#0f172a;">AG</div></a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div style="background:var(--secondary);padding:48px 0;">
+  <div class="container-xl">
+    <div class="row g-4 text-center">
+      <div class="col-6 col-md-3"><div style="color:white;"><div style="font-size:40px;font-weight:900;color:var(--primary);font-family:'Poppins',sans-serif;" data-counter data-target="5000" data-suffix="+">0+</div><div style="font-size:14px;color:rgba(255,255,255,0.7);margin-top:4px;">Products Listed</div></div></div>
+      <div class="col-6 col-md-3"><div style="color:white;"><div style="font-size:40px;font-weight:900;color:var(--primary);font-family:'Poppins',sans-serif;" data-counter data-target="200" data-suffix="+">0+</div><div style="font-size:14px;color:rgba(255,255,255,0.7);margin-top:4px;">Verified Brands</div></div></div>
+      <div class="col-6 col-md-3"><div style="color:white;"><div style="font-size:40px;font-weight:900;color:var(--primary);font-family:'Poppins',sans-serif;" data-counter data-target="15000" data-suffix="+">0+</div><div style="font-size:14px;color:rgba(255,255,255,0.7);margin-top:4px;">Happy Customers</div></div></div>
+      <div class="col-6 col-md-3"><div style="color:white;"><div style="font-size:40px;font-weight:900;color:var(--primary);font-family:'Poppins',sans-serif;" data-counter data-target="64" data-suffix="">0</div><div style="font-size:14px;color:rgba(255,255,255,0.7);margin-top:4px;">Districts Served</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- NEWSLETTER -->
+<section class="newsletter-section">
+  <div class="container-xl">
+    <div class="newsletter-content reveal">
+      <h2>Subscribe to Our Newsletter</h2>
+      <p>Get exclusive deals, new arrivals and construction tips delivered to your inbox</p>
+      <form class="newsletter-form" id="newsletter-form" onsubmit="return false;">
+        <input type="email" placeholder="Enter your email address..." required>
+        <button type="submit">Subscribe <i class="bi bi-arrow-right ms-1"></i></button>
+      </form>
+      <p style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:12px;margin-bottom:0;">🔒 We respect your privacy. No spam, ever.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="main-footer">
+  <div class="container-xl">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo-wrap">
+          <img src="assets/logo.svg" alt="Nematel" style="height:44px;filter:brightness(0) invert(1);" onerror="this.outerHTML='<div style=\'display:flex;align-items:center;gap:8px;\'><div class=\'logo-icon\'>N</div><span class=\'brand-name\' style=\'color:white;\'>NEMATEL</span></div>'">
+        </div>
+        <p style="margin-top:12px;">New Materials &amp; Technology Ltd. — Your one-stop destination for premium construction materials with nationwide delivery across Bangladesh.</p>
+        <ul class="footer-contact-info">
+          <li><i class="bi bi-geo-alt-fill"></i> Khan Tower, 4th Floor, 141, Senpara Parbata, Rokeya Shoroni Road, Mirpur-10, Dhaka-1216</li>
+          <li><i class="bi bi-telephone-fill"></i> <a href="tel:01955008864" style="color:rgba(255,255,255,0.8);">01955-008864</a></li>
+          <li><i class="bi bi-envelope-fill"></i> <a href="mailto:info@nematel.com" style="color:rgba(255,255,255,0.8);">info@nematel.com</a></li>
+        </ul>
+        <div class="social-links mt-3">
+          <a href="#" class="social-btn"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="social-btn"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="social-btn"><i class="bi bi-youtube"></i></a>
+          <a href="#" class="social-btn"><i class="bi bi-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>My Account</h5>
+        <ul class="footer-links">
+          <li><a href="auth.html">Login</a></li>
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="order-history.html">Order History</a></li>
+          <li><a href="wishlist.html">My Wishlist</a></li>
+          <li><a href="compare.html">Compare Products</a></li>
+          <li><a href="track-order.html">Track Order</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Information</h5>
+        <ul class="footer-links">
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="terms.html">Terms &amp; Conditions</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="return-policy.html">Return Policy</a></li>
+          <li><a href="support-policy.html">Support Policy</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Seller Zone</h5>
+        <ul class="footer-links">
+          <li><a href="become-seller.html">Become a Seller</a></li>
+          <li><a href="#">Seller Dashboard</a></li>
+        </ul>
+        <h5 style="margin-top:20px;">Download App</h5>
+        <div class="app-badges">
+          <div class="app-badge cursor-pointer"><i class="bi bi-google-play"></i><div class="app-text"><small>Get it on</small><span>Google Play</span></div></div>
+          <div class="app-badge cursor-pointer"><i class="bi bi-apple"></i><div class="app-text"><small>Download on the</small><span>App Store</span></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Copyright &copy; 2024 <span>Nematel — New Materials &amp; Technology Ltd.</span> All rights reserved.</p>
+      <div class="payment-methods">
+        <span>Payment:</span>
+        <div class="payment-icon" style="background:#e6007a;color:white;">bKash</div>
+        <div class="payment-icon" style="background:#f90;color:#333;">Nagad</div>
+        <div class="payment-icon" style="background:#00a4b4;color:white;">Rocket</div>
+        <div class="payment-icon"><i class="bi bi-credit-card-fill text-primary"></i> Card</div>
+        <div class="payment-icon">COD</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-bottom-nav">
+  <div class="nav-items">
+    <a href="index.html" class="nav-item active"><i class="bi bi-house-fill"></i><span>Home</span></a>
+    <a href="categories.html" class="nav-item"><i class="bi bi-grid-fill"></i><span>Categories</span></a>
+    <button class="nav-item center-btn" onclick="openCartDrawer()" style="border:none;cursor:pointer;position:relative;">
+      <i class="bi bi-cart3"></i>
+      <span class="badge-count d-none cart-count" style="top:-4px;right:4px;"></span>
+    </button>
+    <a href="wishlist.html" class="nav-item" style="position:relative;"><i class="bi bi-heart"></i><span>Wishlist</span><span class="badge-count d-none" data-wishlist-count style="top:-2px;right:0;"></span></a>
+    <a href="dashboard.html" class="nav-item"><i class="bi bi-person"></i><span>Account</span></a>
+  </div>
+</nav>
+
+<!-- BACK TO TOP -->
+<button id="back-to-top" class="back-to-top" title="Back to top"><i class="bi bi-chevron-up"></i></button>
+
+<!-- ============================================================
+     SCRIPTS
+     ============================================================ -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="data/products.js"></script>
+<script src="js/api.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/wishlist.js"></script>
+<script src="js/main.js"></script>
+
+<script>
+// ============================================================
+// STICKY HEADER COLLAPSE / COMPACT NAV ON SCROLL
+// ============================================================
+(function() {
+  let lastScrollY = 0;
+  let ticking = false;
+  const COMPACT_THRESHOLD = 90;   // header compresses (slightly smaller)
+  const MINIMAL_THRESHOLD = 300;  // header fully collapses, nav shows logo+search
+
+  function onScroll() {
+    const y = window.scrollY;
+
+    if (y > MINIMAL_THRESHOLD) {
+      document.body.classList.add('header-minimal', 'header-compact');
+    } else if (y > COMPACT_THRESHOLD) {
+      document.body.classList.add('header-compact');
+      document.body.classList.remove('header-minimal');
+    } else {
+      document.body.classList.remove('header-compact', 'header-minimal');
+    }
+
+    lastScrollY = y;
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(onScroll);
+      ticking = true;
+    }
+  }, { passive: true });
+})();
+
+// ============================================================
+// MOBILE MENU
+// ============================================================
+function openMobileMenu() {
+  document.getElementById('mobile-menu').classList.add('open');
+  document.getElementById('mobile-menu-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileMenu() {
+  document.getElementById('mobile-menu').classList.remove('open');
+  document.getElementById('mobile-menu-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ============================================================
+// CART DRAWER
+// ============================================================
+function openCartDrawer() {
+  document.getElementById('cart-drawer').classList.add('open');
+  document.getElementById('cart-drawer-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  cartManager._updateCartDrawer();
+}
+function closeCartDrawer() {
+  document.getElementById('cart-drawer').classList.remove('open');
+  document.getElementById('cart-drawer-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ============================================================
+// NOTIFICATIONS
+// ============================================================
+function toggleNotifications() {
+  const panel = document.getElementById('notification-panel');
+  const overlay = document.getElementById('notif-overlay');
+  const isOpen = panel.classList.contains('open');
+  if (isOpen) {
+    closeNotifications();
+  } else {
+    panel.classList.add('open');
+    overlay.style.display = 'block';
+  }
+}
+function closeNotifications() {
+  document.getElementById('notification-panel').classList.remove('open');
+  document.getElementById('notif-overlay').style.display = 'none';
+}
+function markAllRead() {
+  document.querySelectorAll('.notification-item.unread').forEach(el => el.classList.remove('unread'));
+  document.querySelector('#notif-btn .badge-count').textContent = '0';
+  document.querySelector('#notif-btn .badge-count').style.display = 'none';
+  showToast('All notifications marked as read', 'success');
+}
+
+// ============================================================
+// MOBILE SEARCH
+// ============================================================
+function toggleMobileSearch() {
+  const bar = document.getElementById('mobile-search-bar');
+  const isHidden = bar.style.display === 'none' || bar.style.display === '';
+  bar.style.display = isHidden ? 'block' : 'none';
+  if (isHidden) bar.querySelector('input').focus();
+}
+
+// ============================================================
+// HERO SLIDER (Standalone, no dependencies)
+// ============================================================
+(function() {
+  let current = 0;
+  let timer = null;
+  let isTransitioning = false;
+
+  const TOTAL = 4;
+
+  function getSlides() { return document.querySelectorAll('#hero-slider .hero-slide'); }
+  function getDots() { return document.querySelectorAll('.slider-dot'); }
+
+  function goToSlide(index) {
+    if (isTransitioning) return;
+    const slides = getSlides();
+    const dots = getDots();
+    if (!slides.length) return;
+
+    isTransitioning = true;
+    const next = ((index % TOTAL) + TOTAL) % TOTAL;
+
+    // Fade out current
+    slides[current].style.transition = 'opacity 0.4s ease';
+    slides[current].style.opacity = '0';
+    dots[current] && dots[current].classList.remove('active');
+
+    setTimeout(() => {
+      slides[current].style.display = 'none';
+      slides[current].style.opacity = '';
+      slides[current].style.transition = '';
+      current = next;
+      slides[current].style.display = 'flex';
+      slides[current].style.opacity = '0';
+      slides[current].style.transition = 'opacity 0.4s ease';
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          slides[current].style.opacity = '1';
+          dots[current] && dots[current].classList.add('active');
+          setTimeout(() => {
+            slides[current].style.transition = '';
+            isTransitioning = false;
+          }, 400);
+        });
+      });
+    }, 350);
+  }
+
+  window.goToSlide = goToSlide;
+  window.sliderNext = function() { resetTimer(); goToSlide(current + 1); };
+  window.sliderPrev = function() { resetTimer(); goToSlide(current - 1); };
+
+  function resetTimer() {
+    clearInterval(timer);
+    timer = setInterval(() => goToSlide(current + 1), 5000);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const slides = getSlides();
+    if (!slides.length) return;
+    slides.forEach((s, i) => {
+      s.style.display = i === 0 ? 'flex' : 'none';
+      s.style.position = 'absolute';
+      s.style.inset = '0';
+    });
+    const wrapper = document.querySelector('.hero-slider-wrapper');
+    if (wrapper) wrapper.style.position = 'relative';
+    resetTimer();
+
+    // Touch support
+    let startX = 0;
+    const slider = document.getElementById('hero-slider');
+    slider && slider.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+    slider && slider.addEventListener('touchend', e => {
+      const diff = startX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) { diff > 0 ? sliderNext() : sliderPrev(); }
+    });
+  });
+})();
+
+// ============================================================
+// MEGA MENU
+// ============================================================
+(function() {
+  const CATEGORIES = [
+    { slug: 'construction-chemical', name: 'Construction Chemical', emoji: '🧪', count: 145,
+      subs: ['Waterproofing', 'Bonding Agent', 'Sealant', 'Tile Adhesive', 'Cement Additive'] },
+    { slug: 'cement-aggregate', name: 'Cement & Aggregate', emoji: '🏗️', count: 89,
+      subs: ['OPC Cement', 'PPC Cement', 'White Cement', 'Sand', 'Gravel'] },
+    { slug: 'tmt-steel-bar', name: 'TMT Steel Bar (Rod)', emoji: '🔩', count: 67,
+      subs: ['10mm', '12mm', '16mm', '20mm', '25mm', 'GI Sheet', 'MS Flat Bar'] },
+    { slug: 'bricks-blocks', name: 'Bricks & Blocks', emoji: '🧱', count: 112,
+      subs: ['Ceramic Brick', 'Concrete Block', 'Hollow Block', 'Paving Brick', 'Fire Brick'] },
+    { slug: 'doors', name: 'Doors', emoji: '🚪', count: 78,
+      subs: ['Teak Wood Door', 'Steel Door', 'Glass Door', 'Flush Door', 'Panel Door'] },
+    { slug: 'door-fittings', name: 'Door Fittings', emoji: '🔑', count: 234,
+      subs: ['Door Lock', 'Door Hinge', 'Door Handle', 'Door Closer', 'Tower Bolt'] },
+    { slug: 'electric-materials', name: 'Electric Materials', emoji: '⚡', count: 389,
+      subs: ['PVC Conduit', 'Wire & Cable', 'Switch & Socket', 'LED Light', 'Circuit Breaker'] },
+    { slug: 'pipe-fitting', name: 'Pipe & Fitting', emoji: '🔧', count: 156,
+      subs: ['PVC Pipe', 'UPVC Pipe', 'GI Pipe', 'Water Tank', 'Pipe Fitting', 'Valve'] },
+    { slug: 'sanitary-ware', name: 'Sanitary Ware', emoji: '🚿', count: 203,
+      subs: ['Commode', 'Wash Basin', 'Shower Head', 'Bathtub', 'Faucet', 'Tap'] },
+    { slug: 'paint-coating', name: 'Paint & Coating', emoji: '🎨', count: 167,
+      subs: ['Exterior Paint', 'Interior Paint', 'Enamel Paint', 'Primer', 'Wood Polish'] },
+    { slug: 'tiles-flooring', name: 'Tiles & Flooring', emoji: '🔲', count: 298,
+      subs: ['Floor Tile', 'Wall Tile', 'Parking Tile', 'Mosaic', 'Granite', 'Marble'] },
+    { slug: 'safety-equipment', name: 'Safety Equipment', emoji: '⛑️', count: 94,
+      subs: ['Helmet', 'Safety Gloves', 'Safety Boot', 'Safety Vest', 'Fall Protection'] },
+  ];
+
+  let activeSlug = null;
+  let panelOpen = false;
+  let closeTimer = null;
+
+  function buildSidebar() {
+    const sidebar = document.getElementById('mega-cat-sidebar');
+    if (!sidebar) return;
+    sidebar.innerHTML = CATEGORIES.map(cat => `
+      <div class="mega-cat-item" data-cat="${cat.slug}" data-name="${cat.name}"
+        onmouseenter="loadMegaContent('${cat.slug}')"
+        onclick="window.location.href='product-listing.html?category=${cat.slug}'">
+        <span class="cat-emoji">${cat.emoji}</span>
+        <div class="cat-label">${cat.name}</div>
+        <span class="cat-count">${cat.count}</span>
+        <i class="bi bi-chevron-right cat-arrow-right"></i>
+      </div>
+    `).join('');
+  }
+
+  window.loadMegaContent = function(slug) {
+    if (activeSlug === slug) return;
+    activeSlug = slug;
+
+    const cat = CATEGORIES.find(c => c.slug === slug);
+    if (!cat) return;
+
+    // Update active class
+    document.querySelectorAll('.mega-cat-item').forEach(el => {
+      el.classList.toggle('active', el.dataset.cat === slug);
+    });
+
+    // Get featured products (4 to fill the 4-column grid)
+    const products = (window.DUMMY_DATA?.products || [])
+      .filter(p => p.category === slug).slice(0, 4);
+
+    const content = document.getElementById('mega-cat-content');
+    if (!content) return;
+
+    content.innerHTML = `
+      <div class="mega-content-header">
+        <h4>${cat.emoji} ${cat.name}</h4>
+        <a href="product-listing.html?category=${slug}" class="view-all-link">
+          View All ${cat.count} Products <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+      <div class="mega-subcats">
+        ${cat.subs.map(s => `
+          <a href="product-listing.html?category=${slug}&sub=${encodeURIComponent(s)}" class="mega-subcat-pill">${s}</a>
+        `).join('')}
+      </div>
+      ${products.length ? `
+        <div class="mega-products-label">⚡ Featured Products</div>
+        <div class="mega-products-grid">
+          ${products.map(p => {
+            const cfg = (window.CAT_PLACEHOLDER && window.CAT_PLACEHOLDER[slug]) || { bg:'#f8f9fa', accent:'#6c757d', icon: cat.emoji };
+            const img = (p.images && p.images[0])
+              ? `<img src="${p.images[0]}" alt="" style="width:100%;height:100%;object-fit:cover;" onerror="this.remove();">`
+              : (cfg.icon || cat.emoji);
+            return `
+              <a href="product-detail.html?id=${p.id}" class="mega-product-card">
+                <div class="mega-product-img" style="background:${cfg.bg};overflow:hidden;">${img}</div>
+                <div class="mega-product-info">
+                  <div class="mega-product-name">${p.name}</div>
+                  <div class="mega-product-price">৳${p.price.toLocaleString()}</div>
+                </div>
+              </a>
+            `;
+          }).join('')}
+        </div>
+      ` : `
+        <div style="text-align:center;padding:20px;color:var(--gray-400);font-size:13px;">
+          <i class="bi bi-box-seam" style="font-size:32px;display:block;margin-bottom:8px;opacity:0.4;"></i>
+          Browse all ${cat.name} products
+        </div>
+      `}
+    `;
+  };
+
+  function openPanel() {
+    clearTimeout(closeTimer);
+    if (!panelOpen) {
+      document.getElementById('mega-panel')?.classList.add('open');
+      document.getElementById('cat-chevron') && (document.getElementById('cat-chevron').style.transform = 'rotate(180deg)');
+      panelOpen = true;
+      // Load first category by default
+      if (!activeSlug && CATEGORIES.length) loadMegaContent(CATEGORIES[0].slug);
+    }
+  }
+
+  function scheduleClose() {
+    closeTimer = setTimeout(closePanel, 200);
+  }
+
+  function closePanel() {
+    document.getElementById('mega-panel')?.classList.remove('open');
+    document.getElementById('cat-chevron') && (document.getElementById('cat-chevron').style.transform = '');
+    panelOpen = false;
+    activeSlug = null;
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    buildSidebar();
+
+    const btn = document.getElementById('cat-btn');
+    const panel = document.getElementById('mega-panel');
+    if (!btn || !panel) return;
+
+    btn.addEventListener('mouseenter', openPanel);
+    btn.addEventListener('mouseleave', scheduleClose);
+    btn.addEventListener('click', () => panelOpen ? closePanel() : openPanel());
+    panel.addEventListener('mouseenter', () => clearTimeout(closeTimer));
+    panel.addEventListener('mouseleave', scheduleClose);
+
+    // Close on outside click
+    document.addEventListener('click', e => {
+      if (!btn.contains(e.target) && !panel.contains(e.target)) closePanel();
+    });
+  });
+})();
+
+// ============================================================
+// PRODUCT TABS FILTER
+// ============================================================
+function filterProducts(category, btn) {
+  document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const filter = category === 'all' ? { featured: true } : { category };
+  loadProductsToGrid('featured-products', filter);
+}
+
+// ============================================================
+// PAGE PRODUCTS LOAD
+// ============================================================
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadProductsToGrid('flash-sale-products', { flashSale: true });
+  await loadProductsToGrid('featured-products', { featured: true });
+});
+</script>
+</body>
+</html>
